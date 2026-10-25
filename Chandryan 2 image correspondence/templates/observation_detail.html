@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+<title>LunarVision | Observation</title>
+
+<style>
+
+body {
+    margin: 0;
+    background: #020812;
+    color: white;
+    font-family: Arial, sans-serif;
+    padding: 30px;
+}
+
+a {
+    color: #20d9ff;
+    text-decoration: none;
+}
+
+h1 {
+    margin-top: 25px;
+}
+
+.header {
+    color: #668398;
+}
+
+.metrics {
+    display: grid;
+    grid-template-columns:
+        repeat(auto-fit, minmax(160px, 1fr));
+    gap: 12px;
+    margin: 25px 0;
+}
+
+.metric {
+    background: #061321;
+    border: 1px solid rgba(30,210,255,.18);
+    border-radius: 10px;
+    padding: 17px;
+}
+
+.metric small {
+    display: block;
+    color: #668398;
+    margin-bottom: 8px;
+}
+
+.metric b {
+    font-size: 20px;
+}
+
+.images {
+    display: grid;
+    grid-template-columns:
+        repeat(auto-fit, minmax(350px, 1fr));
+    gap: 18px;
+}
+
+.card {
+    background: #061321;
+    border: 1px solid rgba(30,210,255,.18);
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.card h3 {
+    padding: 15px;
+    margin: 0;
+    color: #20d9ff;
+}
+
+.card img {
+    width: 100%;
+    display: block;
+    background: black;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<a href="/observations">
+← Observation Archive
+</a>
+
+
+<h1>
+Observation #{{ observation.id }}
+</h1>
+
+
+<div class="header">
+
+{{ observation.source_sensor }}
+
+→
+
+{{ observation.reference_sensor }}
+
+&nbsp;&nbsp; | &nbsp;&nbsp;
+
+{{ observation.created_at }}
+
+</div>
+
+
+<div class="metrics">
+
+
+<div class="metric">
+
+<small>
+SOURCE KEYPOINTS
+</small>
+
+<b>
+{{ observation.source_keypoints }}
+</b>
+
+</div>
+
+
+<div class="metric">
+
+<small>
+REFERENCE KEYPOINTS
+</small>
+
+<b>
+{{ observation.reference_keypoints }}
+</b>
+
+</div>
+
+
+<div class="metric">
+
+<small>
+GOOD MATCHES
+</small>
+
+<b>
+{{ observation.total_matches }}
+</b>
+
+</div>
+
+
+<div class="metric">
+
+<small>
+RANSAC INLIERS
+</small>
+
+<b>
+{{ observation.inlier_matches }}
+</b>
+
+</div>
+
+
+<div class="metric">
+
+<small>
+INLIER RATIO
+</small>
+
+<b>
+{{ observation.inlier_ratio }}%
+</b>
+
+</div>
+
+
+<div class="metric">
+
+<small>
+RMSE
+</small>
+
+<b>
+
+{% if observation.rmse is not none %}
+
+{{ observation.rmse }} px
+
+{% else %}
+
+—
+
+{% endif %}
+
+</b>
+
+</div>
+
+
+</div>
+
+
+<div class="images">
+
+
+{% if observation.correspondence_image %}
+
+<div class="card">
+
+<h3>
+RANSAC Correspondences
+</h3>
+
+<img
+src="{{ observation.correspondence_image }}"
+>
+
+</div>
+
+{% endif %}
+
+
+{% if observation.registered_image %}
+
+<div class="card">
+
+<h3>
+Registered Image
+</h3>
+
+<img
+src="{{ observation.registered_image }}"
+>
+
+</div>
+
+{% endif %}
+
+
+{% if observation.overlay_image %}
+
+<div class="card">
+
+<h3>
+Registration Overlay
+</h3>
+
+<img
+src="{{ observation.overlay_image }}"
+>
+
+</div>
+
+{% endif %}
+
+
+</div>
+
+</body>
+
+</html>

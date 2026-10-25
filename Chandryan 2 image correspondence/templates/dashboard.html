@@ -1,0 +1,738 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>LunarVision | Mission Dashboard</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/main.css') }}">
+</head>
+
+<body>
+
+<div class="app-shell">
+
+    <!-- ================= SIDEBAR ================= -->
+
+    <aside class="sidebar">
+
+        <div class="brand">
+
+            <div class="brand-orbit">
+                <div class="brand-moon"></div>
+                <span></span>
+            </div>
+
+            <div>
+                <div class="brand-name">
+                    Lunar<span>Vision</span>
+                </div>
+
+                <div class="brand-sub">
+                    CHANDRAYAAN-2
+                </div>
+            </div>
+
+        </div>
+
+
+        <div class="sidebar-line"></div>
+
+
+        <nav class="navigation">
+
+            <a href="/" class="nav-item active">
+                <span class="nav-icon">⌂</span>
+                <span>Dashboard</span>
+            </a>
+
+            <a href="/analyze" class="nav-item">
+                <span class="nav-icon">◎</span>
+                <span>Analyze Images</span>
+            </a>
+
+            <a href="/observations" class="nav-item">
+                <span class="nav-icon">◇</span>
+                <span>Observations</span>
+            </a>
+
+            <a href="/lunar-map" class="nav-item">
+                <span class="nav-icon">⊕</span>
+                <span>Lunar Map</span>
+            </a>
+
+            <a href="#" class="nav-item">
+                <span class="nav-icon">◈</span>
+                <span>3D Explorer</span>
+                <small>SOON</small>
+            </a>
+
+        </nav>
+
+
+        <div class="sidebar-section-title">
+            SENSOR PAYLOADS
+        </div>
+
+
+        <div class="sensor-list">
+
+            <div class="sensor">
+                <div class="sensor-dot ohrc"></div>
+
+                <div>
+                    <strong>OHRC</strong>
+                    <small>High Resolution Camera</small>
+                </div>
+            </div>
+
+
+            <div class="sensor">
+                <div class="sensor-dot tmc"></div>
+
+                <div>
+                    <strong>TMC-2</strong>
+                    <small>Terrain Mapping Camera</small>
+                </div>
+            </div>
+
+
+            <div class="sensor">
+                <div class="sensor-dot iirs"></div>
+
+                <div>
+                    <strong>IIRS</strong>
+                    <small>Imaging Infrared Spectrometer</small>
+                </div>
+            </div>
+
+        </div>
+
+
+        <div class="mission-card">
+
+            <div class="mission-orbit">
+                <div class="mission-moon"></div>
+            </div>
+
+            <div>
+                <strong>Chandrayaan-2</strong>
+                <span>India's Lunar Mission</span>
+            </div>
+
+            <div class="mission-divider"></div>
+
+            <p>
+                "Exploring the Moon<br>
+                through data"
+            </p>
+
+        </div>
+
+    </aside>
+
+
+    <!-- ================= MAIN ================= -->
+
+    <main class="main">
+
+        <!-- TOP BAR -->
+
+        <header class="topbar">
+
+            <div class="breadcrumb">
+
+                <span>ISRO</span>
+                <b>›</b>
+                <span>SIH 26166</span>
+                <b>›</b>
+                <span>Lunar Image Correspondence</span>
+
+            </div>
+
+
+            <div class="system-status">
+
+                <span class="online-dot"></span>
+
+                <span>System Online</span>
+
+                <i></i>
+
+                <span>CV ENGINE</span>
+
+                <i></i>
+
+                <strong>ISRO</strong>
+
+            </div>
+
+        </header>
+
+
+        <div class="content">
+
+
+            <!-- ================= HERO ================= -->
+
+            <section class="hero">
+
+                <div class="hero-grid"></div>
+
+                <div class="hero-content">
+
+                    <div class="eyebrow">
+                        IMAGE CORRESPONDENCE INTELLIGENCE
+                    </div>
+
+                    <h1>
+                        Discover the same lunar surface
+                        <span>across different sensors.</span>
+                    </h1>
+
+                    <p>
+                        AI-assisted image correspondence and registration
+                        for Chandrayaan-2 optical and spectral observations.
+                    </p>
+
+
+                    <div class="hero-actions">
+
+                        <a href="/analyze" class="primary-btn">
+                            ◎ &nbsp; Analyze New Images
+                            <b>→</b>
+                        </a>
+
+                        <a href="#workflow" class="secondary-btn">
+                            ◉ &nbsp; Explore Pipeline
+                        </a>
+
+                    </div>
+
+                </div>
+
+
+                <!-- HERO MOON -->
+
+                <div class="hero-space">
+
+                    <div class="orbit orbit-one"></div>
+                    <div class="orbit orbit-two"></div>
+                    <div class="orbit orbit-three"></div>
+
+                    <div class="hero-moon">
+
+                        <div class="crater c1"></div>
+                        <div class="crater c2"></div>
+                        <div class="crater c3"></div>
+                        <div class="crater c4"></div>
+                        <div class="crater c5"></div>
+
+                    </div>
+
+                    <div class="moon-label">
+                        <span></span>
+                        LUNAR SURFACE
+                        <small>CHANDRAYAAN-2</small>
+                    </div>
+
+                </div>
+
+
+                <!-- MISSION INFO -->
+
+                <div class="mission-info">
+
+                    <div class="mission-title">
+                        CHANDRAYAAN-2
+
+                        <span>
+                            <i></i> ACTIVE
+                        </span>
+                    </div>
+
+                    <div class="mission-row">
+                        <b>◉</b>
+                        <span>Launch Date</span>
+                        <strong>22 Jul 2019</strong>
+                    </div>
+
+                    <div class="mission-row">
+                        <b>◈</b>
+                        <span>Mission Type</span>
+                        <strong>Lunar Exploration</strong>
+                    </div>
+
+                    <div class="mission-row">
+                        <b>◎</b>
+                        <span>Sensors</span>
+                        <strong>OHRC / TMC-2 / IIRS</strong>
+                    </div>
+
+                </div>
+
+            </section>
+
+
+
+            <!-- ================= METRICS ================= -->
+
+            <section class="metrics-section">
+
+                <div class="metric-card">
+
+                    <div class="metric-icon cyan">◎</div>
+
+                    <div class="metric-label">
+                        TOTAL OBSERVATIONS
+                    </div>
+
+                    <div class="metric-value">
+                        0
+                    </div>
+
+                    <div class="metric-note">
+                        Saved analyses
+                    </div>
+
+                </div>
+
+
+                <div class="metric-card">
+
+                    <div class="metric-icon purple">⌁</div>
+
+                    <div class="metric-label">
+                        CORRESPONDENCES
+                    </div>
+
+                    <div class="metric-value muted">
+                        —
+                    </div>
+
+                    <div class="metric-note">
+                        Run analysis to calculate
+                    </div>
+
+                </div>
+
+
+                <div class="metric-card">
+
+                    <div class="metric-icon cyan">◇</div>
+
+                    <div class="metric-label">
+                        INLIER RATIO
+                    </div>
+
+                    <div class="metric-value muted">
+                        —
+                    </div>
+
+                    <div class="metric-note">
+                        RANSAC verified
+                    </div>
+
+                </div>
+
+
+                <div class="metric-card">
+
+                    <div class="metric-icon cyan">◉</div>
+
+                    <div class="metric-label">
+                        REGISTERED IMAGES
+                    </div>
+
+                    <div class="metric-value">
+                        0
+                    </div>
+
+                    <div class="metric-note">
+                        Processed results
+                    </div>
+
+                </div>
+
+
+                <div class="quick-actions">
+
+                    <div class="metric-label">
+                        QUICK ACTIONS
+                    </div>
+
+                    <a href="/analyze" class="quick-btn">
+                        ⇧ &nbsp; Upload Images
+                    </a>
+
+                    <a href="/analyze" class="quick-btn primary">
+                        ◎ &nbsp; Run Analysis
+                    </a>
+
+                </div>
+
+            </section>
+
+
+
+            <!-- ================= LOWER GRID ================= -->
+
+            <section class="dashboard-grid">
+
+
+                <!-- SENSOR PAYLOADS -->
+
+                <div class="panel sensors-panel">
+
+                    <div class="panel-heading">
+
+                        <div>
+                            <div class="eyebrow">
+                                SENSOR PAYLOAD OVERVIEW
+                            </div>
+
+                            <h2>Chandrayaan-2 Imaging Systems</h2>
+                        </div>
+
+                        <span class="panel-status">
+                            3 ACTIVE SENSORS
+                        </span>
+
+                    </div>
+
+
+                    <div class="payload-grid">
+
+
+                        <div class="payload-card">
+
+                            <div class="payload-head">
+
+                                <div class="payload-dot ohrc"></div>
+
+                                <div>
+                                    <strong>OHRC</strong>
+                                    <small>High Resolution Camera</small>
+                                </div>
+
+                            </div>
+
+                            <div class="tags">
+                                <span>OPTICAL</span>
+                                <span>PAN</span>
+                            </div>
+
+                            <div class="lunar-preview preview-one">
+                                <div class="crater p1"></div>
+                                <div class="crater p2"></div>
+                                <div class="crater p3"></div>
+                                <div class="crater p4"></div>
+                            </div>
+
+                            <div class="payload-data">
+
+                                <div>
+                                    <span>Resolution</span>
+                                    <b>1.2 m</b>
+                                </div>
+
+                                <div>
+                                    <span>FOV</span>
+                                    <b>5.2° × 5.2°</b>
+                                </div>
+
+                            </div>
+
+                        </div>
+
+
+
+                        <div class="payload-card">
+
+                            <div class="payload-head">
+
+                                <div class="payload-dot tmc"></div>
+
+                                <div>
+                                    <strong>TMC-2</strong>
+                                    <small>Terrain Mapping Camera</small>
+                                </div>
+
+                            </div>
+
+                            <div class="tags">
+                                <span>PANCHROMATIC</span>
+                                <span>MAPPING</span>
+                            </div>
+
+                            <div class="lunar-preview preview-two">
+                                <div class="crater p1"></div>
+                                <div class="crater p2"></div>
+                                <div class="crater p3"></div>
+                            </div>
+
+                            <div class="payload-data">
+
+                                <div>
+                                    <span>Resolution</span>
+                                    <b>6.5 m</b>
+                                </div>
+
+                                <div>
+                                    <span>FOV</span>
+                                    <b>12.8° × 12.8°</b>
+                                </div>
+
+                            </div>
+
+                        </div>
+
+
+
+                        <div class="payload-card">
+
+                            <div class="payload-head">
+
+                                <div class="payload-dot iirs"></div>
+
+                                <div>
+                                    <strong>IIRS</strong>
+                                    <small>Imaging Infrared Spectrometer</small>
+                                </div>
+
+                            </div>
+
+                            <div class="tags">
+                                <span>IR</span>
+                                <span>SPECTRAL</span>
+                            </div>
+
+                            <div class="lunar-preview preview-three">
+                                <div class="crater p1"></div>
+                                <div class="crater p2"></div>
+                                <div class="crater p3"></div>
+                                <div class="crater p4"></div>
+                            </div>
+
+                            <div class="payload-data">
+
+                                <div>
+                                    <span>Resolution</span>
+                                    <b>18.4 m</b>
+                                </div>
+
+                                <div>
+                                    <span>FOV</span>
+                                    <b>20.1° × 20.1°</b>
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+
+                <!-- RECENT ANALYSIS -->
+
+                <div class="panel recent-panel">
+
+                    <div class="panel-heading">
+
+                        <div>
+                            <div class="eyebrow">
+                                CORRESPONDENCE ENGINE
+                            </div>
+
+                            <h2>Recent Analysis</h2>
+                        </div>
+
+                        <a href="/observations">
+                            View All →
+                        </a>
+
+                    </div>
+
+
+                    <div class="empty-analysis">
+
+                        <div class="empty-icon">
+                            ◎
+                        </div>
+
+                        <h3>No observations yet</h3>
+
+                        <p>
+                            Upload two Chandrayaan-2 images and run
+                            the correspondence engine.
+                        </p>
+
+                        <a href="/analyze" class="small-btn">
+                            Start Analysis →
+                        </a>
+
+                    </div>
+
+                </div>
+
+
+
+                <!-- LUNAR MAP -->
+
+                <div class="panel map-panel">
+
+                    <div class="panel-heading">
+
+                        <div>
+                            <div class="eyebrow">
+                                LUNAR CARTOGRAPHY
+                            </div>
+
+                            <h2>Lunar Map Preview</h2>
+                        </div>
+
+                        <span class="map-live">
+                            ● LIVE
+                        </span>
+
+                    </div>
+
+
+                    <div class="map-view">
+
+                        <div class="map-stars"></div>
+
+                        <div class="map-moon">
+
+                            <div class="map-crater mc1"></div>
+                            <div class="map-crater mc2"></div>
+                            <div class="map-crater mc3"></div>
+                            <div class="map-crater mc4"></div>
+                            <div class="map-crater mc5"></div>
+
+                            <div class="roi">
+                                <span></span>
+                            </div>
+
+                        </div>
+
+
+                        <div class="coordinates">
+                            27.4° N &nbsp;|&nbsp; 41.2° E
+                        </div>
+
+                    </div>
+
+
+                    <a href="/lunar-map" class="map-btn">
+                        Open Interactive Map →
+                    </a>
+
+                </div>
+
+            </section>
+
+
+
+            <!-- ================= WORKFLOW ================= -->
+
+            <section class="workflow" id="workflow">
+
+                <div class="workflow-header">
+
+                    <div>
+                        <div class="eyebrow">
+                            CORE WORKFLOW
+                        </div>
+
+                        <h2>
+                            From lunar pixels to verified correspondence.
+                        </h2>
+                    </div>
+
+                    <div class="engine-badge">
+                        <i></i>
+                        SIFT + RANSAC BASELINE
+                    </div>
+
+                </div>
+
+
+                <div class="workflow-line"></div>
+
+
+                <div class="workflow-steps">
+
+                    <div class="workflow-step">
+                        <div class="step-icon">◉</div>
+                        <strong>Chandrayaan-2</strong>
+                        <span>Data</span>
+                    </div>
+
+                    <div class="workflow-arrow">→</div>
+
+                    <div class="workflow-step">
+                        <div class="step-icon">≋</div>
+                        <strong>Pre-processing</strong>
+                        <span>Normalization</span>
+                    </div>
+
+                    <div class="workflow-arrow">→</div>
+
+                    <div class="workflow-step">
+                        <div class="step-icon">✦</div>
+                        <strong>Feature</strong>
+                        <span>Detection</span>
+                    </div>
+
+                    <div class="workflow-arrow">→</div>
+
+                    <div class="workflow-step">
+                        <div class="step-icon">⌁</div>
+                        <strong>Feature</strong>
+                        <span>Matching</span>
+                    </div>
+
+                    <div class="workflow-arrow">→</div>
+
+                    <div class="workflow-step">
+                        <div class="step-icon">◎</div>
+                        <strong>RANSAC</strong>
+                        <span>Verification</span>
+                    </div>
+
+                    <div class="workflow-arrow">→</div>
+
+                    <div class="workflow-step">
+                        <div class="step-icon">╋</div>
+                        <strong>Registration</strong>
+                        <span>Geometry</span>
+                    </div>
+
+                    <div class="workflow-arrow">→</div>
+
+                    <div class="workflow-step">
+                        <div class="step-icon">□</div>
+                        <strong>Registered</strong>
+                        <span>Observation</span>
+                    </div>
+
+                </div>
+
+            </section>
+
+
+        </div>
+
+    </main>
+
+</div>
+
+
+</body>
+</html>

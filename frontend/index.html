@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<title>LunarVision — Dashboard</title>
+<link rel="stylesheet" href="css/style.css" />
+</head>
+<body data-page="index.html">
+<div class="app-shell">
+  <div id="sidebar-mount"></div>
+  <main class="main">
+    <div class="page-header">
+      <h1>Mission Dashboard</h1>
+      <p>Multi-modal, Sun-angle and scale invariant image correspondence — Chandrayaan-2 OHRC / TMC-2 / IIRS</p>
+    </div>
+
+    <div class="grid grid-4" id="stat-cards">
+      <div class="card stat-card"><div class="label">Saved Observations</div><div class="value accent" id="stat-total">—</div></div>
+      <div class="card stat-card"><div class="label">Avg. Inlier Ratio</div><div class="value green" id="stat-ratio">—</div></div>
+      <div class="card stat-card"><div class="label">Avg. RMSE (px)</div><div class="value" id="stat-rmse">—</div></div>
+      <div class="card stat-card"><div class="label">Sensor Pairs Explored</div><div class="value" id="stat-pairs">—</div></div>
+    </div>
+
+    <div class="section-title">Quick Actions</div>
+    <div class="grid grid-3">
+      <div class="card">
+        <h3 style="margin-top:0">🔬 Analyze New Images</h3>
+        <p style="color:var(--text-dim); font-size:13.5px;">Upload two lunar images (or generate a synthetic test pair), select sensors, and run correspondence + registration.</p>
+        <a class="btn" href="analyze.html">Start Analysis</a>
+      </div>
+      <div class="card">
+        <h3 style="margin-top:0">📁 Saved Observations</h3>
+        <p style="color:var(--text-dim); font-size:13.5px;">Browse previously analyzed and saved sensor-pair registrations with full metrics.</p>
+        <a class="btn secondary" href="observations.html">View Observations</a>
+      </div>
+      <div class="card">
+        <h3 style="margin-top:0">🌗 Explore Lunar Map</h3>
+        <p style="color:var(--text-dim); font-size:13.5px;">Combine registered observations sharing a common reference frame into a regional lunar mosaic.</p>
+        <a class="btn secondary" href="lunar_map.html">Open Lunar Map</a>
+      </div>
+    </div>
+
+    <div class="section-title">Supported Sensors</div>
+    <div class="grid grid-3">
+      <div class="card"><span class="badge sensor">OHRC</span><p style="font-size:13px;color:var(--text-dim)">Orbiter High Resolution Camera — highest spatial resolution, narrow swath.</p></div>
+      <div class="card"><span class="badge sensor">TMC-2</span><p style="font-size:13px;color:var(--text-dim)">Terrain Mapping Camera-2 — wide-swath stereo terrain imaging.</p></div>
+      <div class="card"><span class="badge sensor">IIRS</span><p style="font-size:13px;color:var(--text-dim)">Imaging Infra-Red Spectrometer — mineralogical / spectral mapping.</p></div>
+    </div>
+
+    <div class="section-title">Recent Observations</div>
+    <div class="card">
+      <table id="recent-table">
+        <thead><tr><th>ID</th><th>Sensors</th><th>Detector</th><th>Inlier Ratio</th><th>RMSE (px)</th><th>Type</th><th></th></tr></thead>
+        <tbody><tr><td colspan="7" style="color:var(--text-dim)">Loading…</td></tr></tbody>
+      </table>
+    </div>
+  </main>
+</div>
+<script src="js/sidebar.js"></script>
+<script src="js/api.js"></script>
+<script src="js/dashboard.js"></script>
+</body>
+</html>

@@ -1,0 +1,2106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>LunarVision — Analysis Result</title>
+
+    <style>
+
+        /* =====================================================
+           RESET
+        ===================================================== */
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            min-height: 100vh;
+            background:
+                radial-gradient(
+                    circle at 75% 10%,
+                    rgba(63, 94, 180, 0.12),
+                    transparent 32%
+                ),
+                #050a12;
+
+            color: #e8eefc;
+
+            font-family:
+                Inter,
+                ui-sans-serif,
+                system-ui,
+                -apple-system,
+                BlinkMacSystemFont,
+                "Segoe UI",
+                sans-serif;
+        }
+
+        button,
+        a {
+            font: inherit;
+        }
+
+        a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+
+        /* =====================================================
+           LAYOUT
+        ===================================================== */
+
+        .app {
+            min-height: 100vh;
+            display: flex;
+        }
+
+
+        /* =====================================================
+           SIDEBAR
+        ===================================================== */
+
+        .sidebar {
+            width: 262px;
+            min-height: 100vh;
+
+            position: fixed;
+            left: 0;
+            top: 0;
+            bottom: 0;
+
+            padding: 26px 18px;
+
+            background:
+                linear-gradient(
+                    180deg,
+                    #08111e 0%,
+                    #050a12 100%
+                );
+
+            border-right: 1px solid #1c2b40;
+
+            z-index: 20;
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 13px;
+
+            padding: 0 10px 25px;
+
+            border-bottom: 1px solid #1b293b;
+        }
+
+        .brand-icon {
+            width: 43px;
+            height: 43px;
+
+            border-radius: 12px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            background:
+                linear-gradient(
+                    145deg,
+                    #8da7ff,
+                    #405dc4
+                );
+
+            box-shadow:
+                0 8px 25px rgba(67, 91, 205, .28);
+
+            font-size: 21px;
+            font-weight: 800;
+        }
+
+        .brand-name {
+            font-size: 17px;
+            font-weight: 750;
+            letter-spacing: -.3px;
+        }
+
+        .brand-subtitle {
+            margin-top: 4px;
+
+            font-size: 9px;
+            letter-spacing: 1.8px;
+
+            color: #71839e;
+        }
+
+        .nav-title {
+            margin: 31px 12px 14px;
+
+            font-size: 10px;
+            letter-spacing: 2px;
+            color: #637795;
+            font-weight: 700;
+        }
+
+        .nav {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+
+        .nav-item {
+            min-height: 48px;
+
+            padding: 0 15px;
+
+            display: flex;
+            align-items: center;
+            gap: 13px;
+
+            color: #7890b2;
+
+            border: 1px solid transparent;
+            border-radius: 10px;
+
+            font-size: 14px;
+
+            transition:
+                background .2s ease,
+                color .2s ease,
+                border .2s ease;
+        }
+
+        .nav-item:hover {
+            background: rgba(70, 99, 170, .08);
+            color: #d9e5ff;
+        }
+
+        .nav-item.active {
+            color: #ffffff;
+
+            background:
+                linear-gradient(
+                    90deg,
+                    rgba(65, 89, 162, .25),
+                    rgba(35, 50, 84, .18)
+                );
+
+            border-color: #344b78;
+
+            box-shadow:
+                inset 3px 0 0 #6888ff;
+        }
+
+        .nav-icon {
+            width: 18px;
+            text-align: center;
+            opacity: .9;
+        }
+
+        .soon {
+            margin-left: auto;
+
+            font-size: 8px;
+            letter-spacing: 1px;
+
+            color: #7588a6;
+        }
+
+        .system-card {
+            position: absolute;
+
+            left: 18px;
+            right: 18px;
+            bottom: 24px;
+
+            padding: 14px;
+
+            border: 1px solid #1d3049;
+            border-radius: 11px;
+
+            background: #091321;
+
+            font-size: 11px;
+            color: #7f96b7;
+        }
+
+        .online-dot {
+            display: inline-block;
+
+            width: 7px;
+            height: 7px;
+
+            margin-right: 8px;
+
+            border-radius: 50%;
+
+            background: #32e3a4;
+
+            box-shadow:
+                0 0 9px rgba(50, 227, 164, .8);
+        }
+
+
+        /* =====================================================
+           MAIN
+        ===================================================== */
+
+        .main {
+            width: calc(100% - 262px);
+
+            margin-left: 262px;
+
+            min-height: 100vh;
+
+            padding: 28px 38px 60px;
+        }
+
+
+        /* =====================================================
+           TOP BAR
+        ===================================================== */
+
+        .topbar {
+            height: 40px;
+
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            margin-bottom: 42px;
+        }
+
+        .breadcrumb {
+            font-size: 11px;
+            letter-spacing: 1px;
+            color: #657b9e;
+        }
+
+        .breadcrumb strong {
+            color: #e3eaff;
+        }
+
+        .engine-status {
+            display: flex;
+            align-items: center;
+            gap: 9px;
+
+            padding: 8px 13px;
+
+            border: 1px solid #1e3049;
+            border-radius: 20px;
+
+            color: #8296b7;
+
+            font-size: 10px;
+            letter-spacing: .5px;
+        }
+
+
+        /* =====================================================
+           HEADER
+        ===================================================== */
+
+        .page-header {
+            display: flex;
+            align-items: flex-end;
+            justify-content: space-between;
+
+            gap: 30px;
+
+            margin-bottom: 30px;
+        }
+
+        .eyebrow {
+            margin-bottom: 12px;
+
+            color: #779bff;
+
+            font-size: 10px;
+            font-weight: 750;
+
+            letter-spacing: 2.4px;
+        }
+
+        h1 {
+            max-width: 800px;
+
+            font-size: clamp(31px, 3vw, 48px);
+
+            line-height: 1.03;
+
+            letter-spacing: -1.8px;
+
+            color: #f5f8ff;
+        }
+
+        .header-description {
+            max-width: 800px;
+
+            margin-top: 15px;
+
+            color: #7890b2;
+
+            font-size: 14px;
+
+            line-height: 1.7;
+        }
+
+        .observation-id {
+            white-space: nowrap;
+
+            padding: 10px 14px;
+
+            border: 1px solid #263b5a;
+            border-radius: 8px;
+
+            color: #8ca4ca;
+
+            font-size: 10px;
+            letter-spacing: 1px;
+        }
+
+
+        /* =====================================================
+           STATUS
+        ===================================================== */
+
+        .result-status {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+
+            margin-bottom: 20px;
+
+            padding: 15px 18px;
+
+            border: 1px solid #214a47;
+            border-radius: 11px;
+
+            background:
+                linear-gradient(
+                    90deg,
+                    rgba(29, 105, 87, .12),
+                    rgba(8, 18, 28, .8)
+                );
+        }
+
+        .status-icon {
+            width: 36px;
+            height: 36px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            border-radius: 50%;
+
+            background: rgba(40, 211, 155, .12);
+
+            color: #42e4b0;
+
+            font-size: 17px;
+        }
+
+        .status-title {
+            font-size: 13px;
+            font-weight: 750;
+        }
+
+        .status-text {
+            margin-top: 3px;
+
+            color: #7187a7;
+
+            font-size: 11px;
+        }
+
+        .confidence {
+            margin-left: auto;
+
+            padding: 7px 12px;
+
+            border-radius: 5px;
+
+            background: rgba(44, 220, 163, .1);
+
+            border: 1px solid rgba(44, 220, 163, .25);
+
+            color: #43e4b0;
+
+            font-size: 10px;
+            font-weight: 800;
+
+            letter-spacing: 1px;
+        }
+
+
+        /* =====================================================
+           METRIC GRID
+        ===================================================== */
+
+        .metrics {
+            display: grid;
+
+            grid-template-columns:
+                repeat(5, minmax(0, 1fr));
+
+            gap: 12px;
+
+            margin-bottom: 18px;
+        }
+
+        .metric {
+            position: relative;
+
+            min-height: 112px;
+
+            padding: 17px;
+
+            overflow: hidden;
+
+            border: 1px solid #1c3049;
+            border-radius: 10px;
+
+            background:
+                linear-gradient(
+                    145deg,
+                    #0a1726,
+                    #07111d
+                );
+        }
+
+        .metric::after {
+            content: "";
+
+            position: absolute;
+
+            width: 80px;
+            height: 80px;
+
+            right: -35px;
+            bottom: -40px;
+
+            border-radius: 50%;
+
+            background: rgba(78, 112, 230, .08);
+        }
+
+        .metric-label {
+            color: #657d9f;
+
+            font-size: 9px;
+
+            text-transform: uppercase;
+
+            letter-spacing: 1.5px;
+        }
+
+        .metric-value {
+            margin-top: 11px;
+
+            color: #f2f6ff;
+
+            font-size: 25px;
+
+            font-weight: 750;
+
+            letter-spacing: -.8px;
+        }
+
+        .metric-unit {
+            color: #6f85a4;
+            font-size: 11px;
+            font-weight: 500;
+        }
+
+        .metric-small {
+            margin-top: 5px;
+
+            color: #5d769a;
+
+            font-size: 9px;
+        }
+
+
+        /* =====================================================
+           CARD
+        ===================================================== */
+
+        .card {
+            overflow: hidden;
+
+            border: 1px solid #1b2e46;
+            border-radius: 12px;
+
+            background:
+                linear-gradient(
+                    145deg,
+                    #091521,
+                    #07111b
+                );
+        }
+
+        .card-header {
+            min-height: 65px;
+
+            padding: 15px 19px;
+
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            border-bottom: 1px solid #18293e;
+        }
+
+        .card-title {
+            font-size: 13px;
+            font-weight: 750;
+        }
+
+        .card-subtitle {
+            margin-top: 4px;
+
+            color: #617795;
+
+            font-size: 9px;
+        }
+
+        .badge {
+            padding: 7px 10px;
+
+            border: 1px solid #263c5d;
+            border-radius: 6px;
+
+            color: #7798d0;
+
+            font-size: 8px;
+
+            letter-spacing: 1px;
+        }
+
+
+        /* =====================================================
+           IMAGE COMPARISON
+        ===================================================== */
+
+        .comparison {
+            display: grid;
+
+            grid-template-columns:
+                1fr 1fr;
+
+            gap: 12px;
+
+            margin-bottom: 18px;
+        }
+
+        .image-panel {
+            position: relative;
+
+            min-height: 390px;
+
+            background: #03080e;
+        }
+
+        .image-label {
+            position: absolute;
+
+            top: 14px;
+            left: 14px;
+
+            z-index: 2;
+
+            padding: 7px 9px;
+
+            border: 1px solid rgba(103, 137, 202, .35);
+
+            border-radius: 5px;
+
+            background: rgba(4, 11, 20, .85);
+
+            color: #b8c9e7;
+
+            font-size: 9px;
+
+            letter-spacing: 1px;
+        }
+
+        .image-label span {
+            color: #61799f;
+        }
+
+        .analysis-image {
+            width: 100%;
+            height: 390px;
+
+            display: block;
+
+            object-fit: contain;
+
+            background:
+                radial-gradient(
+                    circle,
+                    #152338,
+                    #03070d 72%
+                );
+        }
+
+
+        /* =====================================================
+           MATCH VISUALIZATION
+        ===================================================== */
+
+        .matches-card {
+            margin-bottom: 18px;
+        }
+
+        .matches-container {
+            position: relative;
+
+            background: #02060b;
+        }
+
+        .matches-image {
+            width: 100%;
+
+            max-height: 550px;
+
+            display: block;
+
+            object-fit: contain;
+
+            background: #02060b;
+        }
+
+        .match-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+
+            padding: 12px 17px;
+
+            border-top: 1px solid #18293e;
+
+            color: #627997;
+
+            font-size: 10px;
+        }
+
+        .match-good {
+            color: #41ddb0;
+        }
+
+
+        /* =====================================================
+           LOWER ANALYTICS
+        ===================================================== */
+
+        .analytics-grid {
+            display: grid;
+
+            grid-template-columns:
+                1.1fr .9fr;
+
+            gap: 18px;
+
+            margin-bottom: 18px;
+        }
+
+        .detail-grid {
+            display: grid;
+
+            grid-template-columns:
+                repeat(2, 1fr);
+        }
+
+        .detail {
+            padding: 16px 19px;
+
+            border-bottom: 1px solid #16263a;
+        }
+
+        .detail:nth-child(odd) {
+            border-right: 1px solid #16263a;
+        }
+
+        .detail-label {
+            color: #607795;
+
+            font-size: 9px;
+
+            text-transform: uppercase;
+
+            letter-spacing: 1px;
+        }
+
+        .detail-value {
+            margin-top: 7px;
+
+            color: #dce7fa;
+
+            font-size: 13px;
+
+            font-weight: 650;
+        }
+
+        .detail-value.good {
+            color: #3edcaf;
+        }
+
+
+        /* =====================================================
+           QUALITY BARS
+        ===================================================== */
+
+        .quality-body {
+            padding: 18px 20px 20px;
+        }
+
+        .quality-item {
+            margin-bottom: 20px;
+        }
+
+        .quality-top {
+            display: flex;
+            justify-content: space-between;
+
+            margin-bottom: 8px;
+
+            font-size: 10px;
+        }
+
+        .quality-name {
+            color: #7389a8;
+        }
+
+        .quality-number {
+            color: #dce6f7;
+        }
+
+        .bar {
+            height: 5px;
+
+            overflow: hidden;
+
+            border-radius: 10px;
+
+            background: #18273b;
+        }
+
+        .bar-fill {
+            height: 100%;
+
+            border-radius: inherit;
+
+            background:
+                linear-gradient(
+                    90deg,
+                    #4c68d6,
+                    #54b6ff
+                );
+        }
+
+        .bar-fill.green {
+            background:
+                linear-gradient(
+                    90deg,
+                    #269b7b,
+                    #43dfb0
+                );
+        }
+
+
+        /* =====================================================
+           REGISTRATION
+        ===================================================== */
+
+        .registration {
+            margin-bottom: 18px;
+        }
+
+        .registration-body {
+            display: grid;
+
+            grid-template-columns:
+                1fr 1fr;
+
+            gap: 0;
+        }
+
+        .registration-image {
+            min-height: 430px;
+
+            border-right: 1px solid #18293e;
+
+            background: #02060b;
+        }
+
+        .registration-image img {
+            width: 100%;
+            height: 430px;
+
+            object-fit: contain;
+        }
+
+        .registration-info {
+            padding: 25px;
+        }
+
+        .registration-heading {
+            margin-bottom: 22px;
+
+            font-size: 12px;
+            font-weight: 750;
+        }
+
+        .registration-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            padding: 14px 0;
+
+            border-bottom: 1px solid #17273b;
+        }
+
+        .registration-row span:first-child {
+            color: #69809f;
+
+            font-size: 10px;
+        }
+
+        .registration-row span:last-child {
+            color: #dbe7fb;
+
+            font-size: 11px;
+            font-weight: 650;
+        }
+
+
+        /* =====================================================
+           ACTIONS
+        ===================================================== */
+
+        .actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+
+            margin-top: 20px;
+        }
+
+        .btn {
+            min-height: 42px;
+
+            padding: 0 17px;
+
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+
+            border-radius: 7px;
+
+            border: 1px solid #263d5d;
+
+            background: #091522;
+
+            color: #91a6c5;
+
+            font-size: 11px;
+
+            cursor: pointer;
+
+            transition: .2s ease;
+        }
+
+        .btn:hover {
+            border-color: #4d69aa;
+            color: #ffffff;
+            background: #0c1a2b;
+        }
+
+        .btn.primary {
+            border-color: #5b76e0;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #4d62cf,
+                    #3650b6
+                );
+
+            color: #ffffff;
+
+            box-shadow:
+                0 8px 25px rgba(58, 82, 191, .22);
+        }
+
+        .btn.primary:hover {
+            filter: brightness(1.12);
+        }
+
+
+        /* =====================================================
+           ERROR STATE
+        ===================================================== */
+
+        .error-card {
+            padding: 35px;
+
+            border: 1px solid #513039;
+
+            border-radius: 12px;
+
+            background:
+                linear-gradient(
+                    145deg,
+                    #1b1017,
+                    #0b0c13
+                );
+        }
+
+        .error-title {
+            font-size: 20px;
+            font-weight: 750;
+            color: #ffb5c1;
+        }
+
+        .error-message {
+            margin-top: 10px;
+
+            color: #9d7f89;
+
+            font-size: 12px;
+            line-height: 1.7;
+        }
+
+
+        /* =====================================================
+           RESPONSIVE
+        ===================================================== */
+
+        @media (max-width: 1200px) {
+
+            .sidebar {
+                width: 225px;
+            }
+
+            .main {
+                width: calc(100% - 225px);
+                margin-left: 225px;
+
+                padding: 25px;
+            }
+
+            .metrics {
+                grid-template-columns:
+                    repeat(3, 1fr);
+            }
+
+        }
+
+
+        @media (max-width: 900px) {
+
+            .sidebar {
+                display: none;
+            }
+
+            .main {
+                width: 100%;
+                margin-left: 0;
+
+                padding: 20px;
+            }
+
+            .comparison,
+            .analytics-grid,
+            .registration-body {
+                grid-template-columns: 1fr;
+            }
+
+            .registration-image {
+                border-right: 0;
+                border-bottom: 1px solid #18293e;
+            }
+
+            .metrics {
+                grid-template-columns:
+                    repeat(2, 1fr);
+            }
+
+        }
+
+
+        @media (max-width: 550px) {
+
+            .metrics {
+                grid-template-columns: 1fr;
+            }
+
+            .detail-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .detail:nth-child(odd) {
+                border-right: 0;
+            }
+
+            h1 {
+                font-size: 30px;
+            }
+
+            .page-header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+        }
+
+    </style>
+</head>
+
+
+<body>
+
+<div class="app">
+
+
+    <!-- =====================================================
+         SIDEBAR
+    ====================================================== -->
+
+    <aside class="sidebar">
+
+        <div class="brand">
+
+            <div class="brand-icon">
+                ◐
+            </div>
+
+            <div>
+
+                <div class="brand-name">
+                    LunarVision
+                </div>
+
+                <div class="brand-subtitle">
+                    CHANDRAYAAN-2 ANALYTICS
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <div class="nav-title">
+            MISSION CONSOLE
+        </div>
+
+        <nav class="nav">
+
+            <a
+                href="{{ url_for('dashboard') }}"
+                class="nav-item"
+            >
+                <span class="nav-icon">⌂</span>
+                <span>Dashboard</span>
+            </a>
+
+
+            <a
+                href="{{ url_for('analyze_page') }}"
+                class="nav-item active"
+            >
+                <span class="nav-icon">⌁</span>
+                <span>Analyze Images</span>
+            </a>
+
+
+            <a
+                href="{{ url_for('observations') }}"
+                class="nav-item"
+            >
+                <span class="nav-icon">◇</span>
+                <span>Observations</span>
+            </a>
+
+
+            <a
+                href="{{ url_for('lunar_map') }}"
+                class="nav-item"
+            >
+                <span class="nav-icon">◉</span>
+                <span>Lunar Map</span>
+            </a>
+
+        </nav>
+
+
+        <div class="nav-title">
+            EXPLORATION
+        </div>
+
+        <nav class="nav">
+
+            <a
+                href="#"
+                class="nav-item"
+            >
+                <span class="nav-icon">◉</span>
+                <span>3D Lunar Explorer</span>
+
+                <span class="soon">
+                    SOON
+                </span>
+            </a>
+
+        </nav>
+
+
+        <div class="system-card">
+
+            <span class="online-dot"></span>
+
+            Mission systems operational
+
+        </div>
+
+    </aside>
+
+
+
+    <!-- =====================================================
+         MAIN CONTENT
+    ====================================================== -->
+
+    <main class="main">
+
+
+        <!-- TOP BAR -->
+
+        <div class="topbar">
+
+            <div class="breadcrumb">
+
+                Mission Console
+                &nbsp;/&nbsp;
+                Analysis
+                &nbsp;/&nbsp;
+
+                <strong>
+                    Correspondence Result
+                </strong>
+
+            </div>
+
+
+            <div class="engine-status">
+
+                <span class="online-dot"></span>
+
+                Local Processing Engine
+
+            </div>
+
+        </div>
+
+
+
+        <!-- HEADER -->
+
+        <section class="page-header">
+
+            <div>
+
+                <div class="eyebrow">
+                    MULTI-MODAL LUNAR IMAGE REGISTRATION
+                </div>
+
+                <h1>
+                    Correspondence Analysis
+                    <br>
+                    <span style="color:#7595ff;">
+                        Verified &amp; Registered
+                    </span>
+                </h1>
+
+                <p class="header-description">
+
+                    Geometrically verified correspondence between
+                    {{ source_sensor }}
+                    and
+                    {{ reference_sensor }}
+                    observations using feature matching,
+                    RANSAC and homography-based registration.
+
+                </p>
+
+            </div>
+
+
+            <div class="observation-id">
+
+                {{ observation_id }}
+
+            </div>
+
+        </section>
+
+
+
+        {% if success %}
+
+
+        <!-- =================================================
+             SUCCESS STATUS
+        ================================================== -->
+
+        <div class="result-status">
+
+            <div class="status-icon">
+                ✓
+            </div>
+
+            <div>
+
+                <div class="status-title">
+                    Registration completed
+                </div>
+
+                <div class="status-text">
+
+                    A geometrically consistent transformation
+                    was established between the two observations.
+
+                </div>
+
+            </div>
+
+
+            <div class="confidence">
+
+                {{ result.confidence }}
+
+                CONFIDENCE
+
+            </div>
+
+        </div>
+
+
+
+        <!-- =================================================
+             METRICS
+        ================================================== -->
+
+        <section class="metrics">
+
+
+            <div class="metric">
+
+                <div class="metric-label">
+                    Source Keypoints
+                </div>
+
+                <div class="metric-value">
+                    {{ "{:,}".format(result.keypoints_source) }}
+                </div>
+
+                <div class="metric-small">
+                    {{ source_sensor }}
+                </div>
+
+            </div>
+
+
+            <div class="metric">
+
+                <div class="metric-label">
+                    Target Keypoints
+                </div>
+
+                <div class="metric-value">
+                    {{ "{:,}".format(result.keypoints_target) }}
+                </div>
+
+                <div class="metric-small">
+                    {{ reference_sensor }}
+                </div>
+
+            </div>
+
+
+            <div class="metric">
+
+                <div class="metric-label">
+                    Candidate Matches
+                </div>
+
+                <div class="metric-value">
+                    {{ "{:,}".format(result.raw_matches) }}
+                </div>
+
+                <div class="metric-small">
+                    Lowe ratio verified
+                </div>
+
+            </div>
+
+
+            <div class="metric">
+
+                <div class="metric-label">
+                    RANSAC Inliers
+                </div>
+
+                <div class="metric-value">
+                    {{ "{:,}".format(result.inliers) }}
+                </div>
+
+                <div class="metric-small">
+                    Geometrically consistent
+                </div>
+
+            </div>
+
+
+            <div class="metric">
+
+                <div class="metric-label">
+                    Inlier Ratio
+                </div>
+
+                <div class="metric-value">
+
+                    {{ result.inlier_ratio }}<span class="metric-unit">%</span>
+
+                </div>
+
+                <div class="metric-small">
+                    Verified correspondences
+                </div>
+
+            </div>
+
+        </section>
+
+
+
+        <!-- =================================================
+             ORIGINAL IMAGES
+        ================================================== -->
+
+        <section class="comparison">
+
+
+            <!-- SOURCE -->
+
+            <div class="card">
+
+                <div class="card-header">
+
+                    <div>
+
+                        <div class="card-title">
+                            Source Observation
+                        </div>
+
+                        <div class="card-subtitle">
+                            {{ source_sensor }}
+                        </div>
+
+                    </div>
+
+                    <div class="badge">
+                        TRANSFORM
+                    </div>
+
+                </div>
+
+
+                <div class="image-panel">
+
+                    <div class="image-label">
+                        A
+                        <span> SOURCE</span>
+                    </div>
+
+                    <img
+                        class="analysis-image"
+                        src="{{ result.source_image }}"
+                        alt="Source lunar observation"
+                    >
+
+                </div>
+
+            </div>
+
+
+
+            <!-- TARGET -->
+
+            <div class="card">
+
+                <div class="card-header">
+
+                    <div>
+
+                        <div class="card-title">
+                            Reference Observation
+                        </div>
+
+                        <div class="card-subtitle">
+                            {{ reference_sensor }}
+                        </div>
+
+                    </div>
+
+                    <div class="badge">
+                        TARGET
+                    </div>
+
+                </div>
+
+
+                <div class="image-panel">
+
+                    <div class="image-label">
+                        B
+                        <span> REFERENCE</span>
+                    </div>
+
+                    <img
+                        class="analysis-image"
+                        src="{{ result.reference_image }}"
+                        alt="Reference lunar observation"
+                    >
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+
+        <!-- =================================================
+             CORRESPONDENCE VISUALIZATION
+        ================================================== -->
+
+        <section class="card matches-card">
+
+            <div class="card-header">
+
+                <div>
+
+                    <div class="card-title">
+                        Verified Correspondences
+                    </div>
+
+                    <div class="card-subtitle">
+                        RANSAC inliers retained after geometric verification
+                    </div>
+
+                </div>
+
+                <div class="badge">
+                    {{ result.detector }}
+                    ·
+                    RANSAC
+                </div>
+
+            </div>
+
+
+            <div class="matches-container">
+
+                <img
+                    class="matches-image"
+                    src="{{ result.matches_image }}"
+                    alt="Verified lunar image correspondences"
+                >
+
+            </div>
+
+
+            <div class="match-footer">
+
+                <span>
+                    Candidate matches:
+                    <strong>{{ result.raw_matches }}</strong>
+                </span>
+
+                <span class="match-good">
+                    Verified inliers:
+                    <strong>{{ result.inliers }}</strong>
+                </span>
+
+                <span>
+                    Ratio:
+                    <strong>{{ result.inlier_ratio }}%</strong>
+                </span>
+
+            </div>
+
+        </section>
+
+
+
+        <!-- =================================================
+             ANALYTICS
+        ================================================== -->
+
+        <section class="analytics-grid">
+
+
+            <!-- GEOMETRY -->
+
+            <div class="card">
+
+                <div class="card-header">
+
+                    <div>
+
+                        <div class="card-title">
+                            Geometric Verification
+                        </div>
+
+                        <div class="card-subtitle">
+                            Transformation quality
+                        </div>
+
+                    </div>
+
+                    <div class="badge">
+                        HOMOGRAPHY
+                    </div>
+
+                </div>
+
+
+                <div class="detail-grid">
+
+
+                    <div class="detail">
+
+                        <div class="detail-label">
+                            Model
+                        </div>
+
+                        <div class="detail-value">
+                            Homography
+                        </div>
+
+                    </div>
+
+
+                    <div class="detail">
+
+                        <div class="detail-label">
+                            Verification
+                        </div>
+
+                        <div class="detail-value good">
+                            RANSAC ✓
+                        </div>
+
+                    </div>
+
+
+                    <div class="detail">
+
+                        <div class="detail-label">
+                            RANSAC Threshold
+                        </div>
+
+                        <div class="detail-value">
+                            5 px
+                        </div>
+
+                    </div>
+
+
+                    <div class="detail">
+
+                        <div class="detail-label">
+                            Reprojection RMSE
+                        </div>
+
+                        <div class="detail-value">
+
+                            {% if result.rmse is not none %}
+                                {{ result.rmse }} px
+                            {% else %}
+                                —
+                            {% endif %}
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="detail">
+
+                        <div class="detail-label">
+                            Spatial Coverage
+                        </div>
+
+                        <div class="detail-value">
+                            {{ result.spatial_coverage }}%
+                        </div>
+
+                    </div>
+
+
+                    <div class="detail">
+
+                        <div class="detail-label">
+                            Preprocessing
+                        </div>
+
+                        <div class="detail-value">
+                            {{ result.preprocessing }}
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+
+            <!-- QUALITY -->
+
+            <div class="card">
+
+                <div class="card-header">
+
+                    <div>
+
+                        <div class="card-title">
+                            Correspondence Quality
+                        </div>
+
+                        <div class="card-subtitle">
+                            Evidence used for confidence assessment
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <div class="quality-body">
+
+
+                    <div class="quality-item">
+
+                        <div class="quality-top">
+
+                            <span class="quality-name">
+                                Inlier Ratio
+                            </span>
+
+                            <span class="quality-number">
+                                {{ result.inlier_ratio }}%
+                            </span>
+
+                        </div>
+
+                        <div class="bar">
+
+                            <div
+                                class="bar-fill green dynamic-bar"
+                                data-width="{{ result.inlier_ratio }}"
+                            ></div>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="quality-item">
+
+                        <div class="quality-top">
+
+                            <span class="quality-name">
+                                Spatial Coverage
+                            </span>
+
+                            <span class="quality-number">
+                                {{ result.spatial_coverage }}%
+                            </span>
+
+                        </div>
+
+                        <div class="bar">
+
+                            <div
+                                class="bar-fill dynamic-bar"
+                                data-width="{{ result.spatial_coverage }}"
+                            ></div>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="quality-item">
+
+                        <div class="quality-top">
+
+                            <span class="quality-name">
+                                Verified Inliers
+                            </span>
+
+                            <span class="quality-number">
+                                {{ result.inliers }}
+                            </span>
+
+                        </div>
+
+                        <div class="bar">
+
+                            <div
+                                 class="bar-fill dynamic-bar"
+                                data-width="{{ result.inliers }}"
+                            ></div>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="quality-item">
+
+                        <div class="quality-top">
+
+                            <span class="quality-name">
+                                Processing Time
+                            </span>
+
+                            <span class="quality-number">
+                                {{ result.processing_time }} s
+                            </span>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+
+        <!-- =================================================
+             REGISTERED RESULT
+        ================================================== -->
+
+        <section class="card registration">
+
+            <div class="card-header">
+
+                <div>
+
+                    <div class="card-title">
+                        Registered Observation
+                    </div>
+
+                    <div class="card-subtitle">
+                        Source image transformed into the reference geometry
+                    </div>
+
+                </div>
+
+                <div class="badge">
+                    REGISTERED
+                </div>
+
+            </div>
+
+
+            <div class="registration-body">
+
+
+                <div class="registration-image">
+
+                    <img
+                        src="{{ result.registered_image }}"
+                        alt="Registered lunar observation"
+                    >
+
+                </div>
+
+
+                <div class="registration-info">
+
+                    <div class="registration-heading">
+                        Registration Summary
+                    </div>
+
+
+                    <div class="registration-row">
+
+                        <span>
+                            Source
+                        </span>
+
+                        <span>
+                            {{ source_sensor }}
+                        </span>
+
+                    </div>
+
+
+                    <div class="registration-row">
+
+                        <span>
+                            Reference
+                        </span>
+
+                        <span>
+                            {{ reference_sensor }}
+                        </span>
+
+                    </div>
+
+
+                    <div class="registration-row">
+
+                        <span>
+                            Transformation
+                        </span>
+
+                        <span>
+                            Homography
+                        </span>
+
+                    </div>
+
+
+                    <div class="registration-row">
+
+                        <span>
+                            Geometric Verification
+                        </span>
+
+                        <span style="color:#43dfb0;">
+                            PASS ✓
+                        </span>
+
+                    </div>
+
+
+                    <div class="registration-row">
+
+                        <span>
+                            Verified Inliers
+                        </span>
+
+                        <span>
+                            {{ result.inliers }}
+                        </span>
+
+                    </div>
+
+
+                    <div class="registration-row">
+
+                        <span>
+                            Spatial Coverage
+                        </span>
+
+                        <span>
+                            {{ result.spatial_coverage }}%
+                        </span>
+
+                    </div>
+
+
+                    <div class="registration-row">
+
+                        <span>
+                            Reprojection Error
+                        </span>
+
+                        <span>
+                            {% if result.rmse is not none %}
+                                {{ result.rmse }} px
+                            {% else %}
+                                —
+                            {% endif %}
+                        </span>
+
+                    </div>
+
+
+                    <div class="registration-row">
+
+                        <span>
+                            Processing Time
+                        </span>
+
+                        <span>
+                            {{ result.processing_time }} s
+                        </span>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+
+        <!-- =================================================
+             OVERLAY
+        ================================================== -->
+
+        <section class="card">
+
+            <div class="card-header">
+
+                <div>
+
+                    <div class="card-title">
+                        Alignment Overlay
+                    </div>
+
+                    <div class="card-subtitle">
+                        Registered source combined with reference observation
+                    </div>
+
+                </div>
+
+                <div class="badge">
+                    50 / 50 OVERLAY
+                </div>
+
+            </div>
+
+
+            <div class="matches-container">
+
+                <img
+                    class="matches-image"
+                    src="{{ result.overlay_image }}"
+                    alt="Lunar registration overlay"
+                >
+
+            </div>
+
+        </section>
+
+
+
+        <!-- =================================================
+             ACTIONS
+        ================================================== -->
+
+        <div class="actions">
+
+            <a
+                href="{{ url_for('analyze_page') }}"
+                class="btn"
+            >
+                ← New Analysis
+            </a>
+
+
+            <a
+                href="{{ url_for('observations') }}"
+                class="btn primary"
+            >
+                Save / View Observation →
+            </a>
+
+        </div>
+
+
+
+        {% else %}
+
+
+        <!-- =================================================
+             FAILURE
+        ================================================== -->
+
+        <section class="error-card">
+
+            <div class="error-title">
+                No reliable correspondence established
+            </div>
+
+            <div class="error-message">
+
+                {{ result.message }}
+
+                <br><br>
+
+                LunarVision could not establish sufficient
+                geometrically consistent correspondences between
+                the supplied observations.
+
+                Try another image pair or adjust the feature
+                matching parameters.
+
+            </div>
+
+        </section>
+
+
+        <div class="actions">
+
+            <a
+                href="{{ url_for('analyze_page') }}"
+                class="btn primary"
+            >
+                ← Return to Analysis
+            </a>
+
+        </div>
+
+
+        {% endif %}
+
+
+    </main>
+
+</div>
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+
+    document.querySelectorAll(".dynamic-bar").forEach(function (bar) {
+
+        let value = parseFloat(bar.dataset.width);
+
+        if (isNaN(value)) {
+            value = 0;
+        }
+
+        value = Math.max(0, Math.min(value, 100));
+
+        bar.style.width = value + "%";
+    });
+
+});
+</script>
+
+</body>
+</html>

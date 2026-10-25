@@ -1,0 +1,1436 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Lunar Map | LunarVision</title>
+
+    <style>
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+
+        body {
+            font-family:
+                Inter,
+                Segoe UI,
+                Arial,
+                sans-serif;
+
+            background:
+                radial-gradient(
+                    circle at 75% 10%,
+                    rgba(90, 120, 180, 0.10),
+                    transparent 35%
+                ),
+                #070b12;
+
+            color: #e8edf5;
+
+            min-height: 100vh;
+        }
+
+
+        /* =================================================
+           SIDEBAR
+        ================================================= */
+
+        .sidebar {
+
+            position: fixed;
+
+            left: 0;
+            top: 0;
+            bottom: 0;
+
+            width: 245px;
+
+            background:
+                linear-gradient(
+                    180deg,
+                    #0b111b,
+                    #080d15
+                );
+
+            border-right:
+                1px solid
+                rgba(255,255,255,0.07);
+
+            padding: 24px 16px;
+
+            z-index: 10;
+        }
+
+
+        .brand {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 12px;
+
+            padding: 0 10px 30px;
+        }
+
+
+        .brand-icon {
+
+            width: 38px;
+            height: 38px;
+
+            border-radius: 50%;
+
+            background:
+                radial-gradient(
+                    circle at 35% 30%,
+                    #dce4ef,
+                    #8995a6 45%,
+                    #394453 70%,
+                    #151c26
+                );
+
+            box-shadow:
+                0 0 22px
+                rgba(190,205,225,0.18);
+        }
+
+
+        .brand-text h2 {
+
+            font-size: 18px;
+
+            letter-spacing: 0.5px;
+        }
+
+
+        .brand-text span {
+
+            display: block;
+
+            margin-top: 3px;
+
+            color: #7d8999;
+
+            font-size: 11px;
+
+            letter-spacing: 1px;
+
+            text-transform: uppercase;
+        }
+
+
+        .nav-title {
+
+            color: #596575;
+
+            font-size: 10px;
+
+            letter-spacing: 1.4px;
+
+            text-transform: uppercase;
+
+            padding: 0 12px;
+
+            margin-bottom: 8px;
+        }
+
+
+        .nav {
+
+            display: flex;
+
+            flex-direction: column;
+
+            gap: 5px;
+        }
+
+
+        .nav a {
+
+            text-decoration: none;
+
+            color: #8e99a8;
+
+            padding: 12px;
+
+            border-radius: 9px;
+
+            font-size: 13px;
+
+            transition: 0.2s;
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 10px;
+        }
+
+
+        .nav a:hover {
+
+            background:
+                rgba(255,255,255,0.04);
+
+            color: #dce4ef;
+        }
+
+
+        .nav a.active {
+
+            background:
+                linear-gradient(
+                    90deg,
+                    rgba(115,145,185,0.18),
+                    rgba(115,145,185,0.05)
+                );
+
+            color: #ffffff;
+
+            border:
+                1px solid
+                rgba(150,170,200,0.12);
+        }
+
+
+        .nav-icon {
+
+            width: 20px;
+
+            text-align: center;
+
+            opacity: 0.8;
+        }
+
+
+        .payload-box {
+
+            position: absolute;
+
+            left: 16px;
+            right: 16px;
+            bottom: 20px;
+
+            border:
+                1px solid
+                rgba(255,255,255,0.07);
+
+            background:
+                rgba(255,255,255,0.025);
+
+            border-radius: 12px;
+
+            padding: 14px;
+        }
+
+
+        .payload-title {
+
+            color: #687486;
+
+            font-size: 9px;
+
+            text-transform: uppercase;
+
+            letter-spacing: 1.2px;
+
+            margin-bottom: 10px;
+        }
+
+
+        .payload {
+
+            display: flex;
+
+            justify-content: space-between;
+
+            align-items: center;
+
+            padding: 7px 0;
+
+            border-bottom:
+                1px solid
+                rgba(255,255,255,0.04);
+
+            font-size: 11px;
+        }
+
+
+        .payload:last-child {
+            border-bottom: none;
+        }
+
+
+        .status-dot {
+
+            width: 6px;
+            height: 6px;
+
+            border-radius: 50%;
+
+            background: #7f8c9e;
+
+            box-shadow:
+                0 0 8px
+                rgba(150,170,200,0.4);
+        }
+
+
+        /* =================================================
+           MAIN
+        ================================================= */
+
+        .main {
+
+            margin-left: 245px;
+
+            padding: 30px 38px 50px;
+
+            min-height: 100vh;
+        }
+
+
+        .topbar {
+
+            display: flex;
+
+            justify-content: space-between;
+
+            align-items: center;
+
+            margin-bottom: 30px;
+        }
+
+
+        .breadcrumb {
+
+            color: #697586;
+
+            font-size: 11px;
+
+            letter-spacing: 0.3px;
+        }
+
+
+        .breadcrumb strong {
+
+            color: #cbd3df;
+        }
+
+
+        .mission-status {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 8px;
+
+            font-size: 11px;
+
+            color: #8490a0;
+
+            border:
+                1px solid
+                rgba(255,255,255,0.07);
+
+            padding: 8px 12px;
+
+            border-radius: 20px;
+
+            background:
+                rgba(255,255,255,0.02);
+        }
+
+
+        .mission-status .dot {
+
+            width: 6px;
+            height: 6px;
+
+            border-radius: 50%;
+
+            background: #aeb8c5;
+        }
+
+
+        /* =================================================
+           PAGE HEADER
+        ================================================= */
+
+        .page-header {
+
+            margin-bottom: 24px;
+        }
+
+
+        .eyebrow {
+
+            color: #718096;
+
+            font-size: 10px;
+
+            text-transform: uppercase;
+
+            letter-spacing: 1.8px;
+
+            margin-bottom: 8px;
+        }
+
+
+        .page-header h1 {
+
+            font-size: 30px;
+
+            font-weight: 600;
+
+            letter-spacing: -0.7px;
+        }
+
+
+        .page-header p {
+
+            color: #7e8999;
+
+            margin-top: 8px;
+
+            max-width: 760px;
+
+            font-size: 13px;
+
+            line-height: 1.7;
+        }
+
+
+        /* =================================================
+           MOSAIC CARD
+        ================================================= */
+
+        .mosaic-card {
+
+            background:
+                linear-gradient(
+                    145deg,
+                    rgba(19,27,39,0.95),
+                    rgba(10,15,23,0.95)
+                );
+
+            border:
+                1px solid
+                rgba(255,255,255,0.07);
+
+            border-radius: 15px;
+
+            overflow: hidden;
+
+            margin-bottom: 25px;
+
+            box-shadow:
+                0 20px 50px
+                rgba(0,0,0,0.25);
+        }
+
+
+        .card-header {
+
+            padding: 19px 22px;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: space-between;
+
+            border-bottom:
+                1px solid
+                rgba(255,255,255,0.06);
+        }
+
+
+        .card-title {
+
+            font-size: 14px;
+
+            font-weight: 600;
+        }
+
+
+        .card-subtitle {
+
+            color: #687486;
+
+            font-size: 10px;
+
+            margin-top: 4px;
+        }
+
+
+        .count-badge {
+
+            color: #aeb9c8;
+
+            background:
+                rgba(255,255,255,0.04);
+
+            border:
+                1px solid
+                rgba(255,255,255,0.07);
+
+            border-radius: 20px;
+
+            padding: 7px 11px;
+
+            font-size: 10px;
+        }
+
+
+        .mosaic-area {
+
+            min-height: 410px;
+
+            padding: 20px;
+
+            display: flex;
+
+            justify-content: center;
+
+            align-items: center;
+
+            background:
+                radial-gradient(
+                    circle at center,
+                    rgba(100,120,150,0.06),
+                    transparent 65%
+                );
+        }
+
+
+        .mosaic-image {
+
+            max-width: 100%;
+
+            max-height: 600px;
+
+            display: block;
+
+            border-radius: 9px;
+
+            border:
+                1px solid
+                rgba(255,255,255,0.08);
+
+            box-shadow:
+                0 15px 45px
+                rgba(0,0,0,0.35);
+        }
+
+
+        .empty-mosaic {
+
+            text-align: center;
+
+            padding: 60px 30px;
+
+            max-width: 550px;
+        }
+
+
+        .empty-icon {
+
+            font-size: 42px;
+
+            opacity: 0.45;
+
+            margin-bottom: 16px;
+        }
+
+
+        .empty-mosaic h3 {
+
+            font-size: 17px;
+
+            margin-bottom: 8px;
+        }
+
+
+        .empty-mosaic p {
+
+            color: #6e7a8b;
+
+            font-size: 12px;
+
+            line-height: 1.7;
+        }
+
+
+        /* =================================================
+           INFO GRID
+        ================================================= */
+
+        .info-grid {
+
+            display: grid;
+
+            grid-template-columns:
+                repeat(3, 1fr);
+
+            gap: 15px;
+
+            margin-bottom: 25px;
+        }
+
+
+        .info-card {
+
+            background:
+                rgba(14,20,30,0.9);
+
+            border:
+                1px solid
+                rgba(255,255,255,0.06);
+
+            border-radius: 13px;
+
+            padding: 18px;
+        }
+
+
+        .info-label {
+
+            color: #667284;
+
+            text-transform: uppercase;
+
+            letter-spacing: 1px;
+
+            font-size: 9px;
+
+            margin-bottom: 9px;
+        }
+
+
+        .info-value {
+
+            font-size: 23px;
+
+            font-weight: 600;
+        }
+
+
+        .info-description {
+
+            color: #687486;
+
+            font-size: 10px;
+
+            margin-top: 5px;
+
+            line-height: 1.5;
+        }
+
+
+        /* =================================================
+           OBSERVATIONS
+        ================================================= */
+
+        .observations-card {
+
+            background:
+                rgba(12,18,27,0.95);
+
+            border:
+                1px solid
+                rgba(255,255,255,0.07);
+
+            border-radius: 15px;
+
+            overflow: hidden;
+        }
+
+
+        .observation-row {
+
+            display: grid;
+
+            grid-template-columns:
+                1.1fr
+                1fr
+                0.8fr
+                0.8fr
+                0.8fr
+                0.8fr;
+
+            align-items: center;
+
+            gap: 15px;
+
+            padding: 15px 20px;
+
+            border-bottom:
+                1px solid
+                rgba(255,255,255,0.045);
+
+            font-size: 11px;
+        }
+
+
+        .observation-row:last-child {
+            border-bottom: none;
+        }
+
+
+        .observation-head {
+
+            color: #657184;
+
+            text-transform: uppercase;
+
+            letter-spacing: 0.8px;
+
+            font-size: 9px;
+
+            background:
+                rgba(255,255,255,0.015);
+        }
+
+
+        .observation-id {
+
+            color: #d9e0e9;
+
+            font-weight: 600;
+        }
+
+
+        .sensor-pair {
+
+            color: #9da9b8;
+        }
+
+
+        .metric {
+
+            color: #b8c3d1;
+        }
+
+
+        .status {
+
+            display: inline-flex;
+
+            width: fit-content;
+
+            padding: 5px 8px;
+
+            border-radius: 6px;
+
+            font-size: 9px;
+
+            letter-spacing: 0.3px;
+
+            background:
+                rgba(255,255,255,0.05);
+
+            color: #b8c3d1;
+        }
+
+
+        .view-link {
+
+            color: #aeb9c8;
+
+            text-decoration: none;
+
+            border:
+                1px solid
+                rgba(255,255,255,0.08);
+
+            padding: 6px 9px;
+
+            border-radius: 6px;
+
+            width: fit-content;
+
+            transition: 0.2s;
+        }
+
+
+        .view-link:hover {
+
+            background:
+                rgba(255,255,255,0.06);
+
+            color: white;
+        }
+
+
+        .no-observations {
+
+            padding: 50px 20px;
+
+            text-align: center;
+
+            color: #6d7889;
+
+            font-size: 12px;
+        }
+
+
+        /* =================================================
+           FOOTER NOTE
+        ================================================= */
+
+        .scientific-note {
+
+            margin-top: 20px;
+
+            padding: 13px 16px;
+
+            border-left:
+                2px solid
+                #5d6979;
+
+            background:
+                rgba(255,255,255,0.025);
+
+            color: #687486;
+
+            font-size: 10px;
+
+            line-height: 1.6;
+        }
+
+
+        /* =================================================
+           RESPONSIVE
+        ================================================= */
+
+        @media (max-width: 1050px) {
+
+            .sidebar {
+                width: 210px;
+            }
+
+            .main {
+                margin-left: 210px;
+                padding: 25px;
+            }
+
+            .info-grid {
+                grid-template-columns:
+                    repeat(2, 1fr);
+            }
+
+            .observation-row {
+                grid-template-columns:
+                    1fr 1fr 0.7fr 0.7fr;
+            }
+
+            .observation-head {
+                display: none;
+            }
+        }
+
+
+        @media (max-width: 750px) {
+
+            .sidebar {
+                position: relative;
+
+                width: 100%;
+
+                height: auto;
+
+                min-height: 0;
+            }
+
+            .payload-box {
+                position: relative;
+
+                left: auto;
+                right: auto;
+                bottom: auto;
+
+                margin-top: 20px;
+            }
+
+            .main {
+                margin-left: 0;
+
+                padding: 20px;
+            }
+
+            .info-grid {
+                grid-template-columns:
+                    1fr;
+            }
+
+            .observation-row {
+                grid-template-columns:
+                    1fr 1fr;
+
+                gap: 10px;
+            }
+
+            .topbar {
+                gap: 15px;
+
+                align-items: flex-start;
+
+                flex-direction: column;
+            }
+        }
+
+    </style>
+</head>
+
+
+<body>
+
+
+<!-- =====================================================
+     SIDEBAR
+===================================================== -->
+
+<aside class="sidebar">
+
+
+    <div class="brand">
+
+        <div class="brand-icon"></div>
+
+        <div class="brand-text">
+
+            <h2>LunarVision</h2>
+
+            <span>Chandrayaan-2</span>
+
+        </div>
+
+    </div>
+
+
+    <div class="nav-title">
+        Mission Console
+    </div>
+
+
+    <nav class="nav">
+
+        <a href="/">
+            <span class="nav-icon">⌂</span>
+            Dashboard
+        </a>
+
+
+        <a href="/analyze">
+            <span class="nav-icon">⌁</span>
+            Analyze Images
+        </a>
+
+
+        <a href="/observations">
+            <span class="nav-icon">◈</span>
+            Observations
+        </a>
+
+
+        <a
+            href="/lunar-map"
+            class="active"
+        >
+            <span class="nav-icon">◉</span>
+            Lunar Map
+        </a>
+
+
+        <a href="#">
+            <span class="nav-icon">◇</span>
+            3D Explorer
+            <small
+                style="
+                    margin-left:auto;
+                    color:#596575;
+                    font-size:8px;
+                "
+            >
+                SOON
+            </small>
+        </a>
+
+    </nav>
+
+
+    <div class="payload-box">
+
+        <div class="payload-title">
+            Chandrayaan Payloads
+        </div>
+
+
+        <div class="payload">
+
+            <span>OHRC</span>
+
+            <span class="status-dot"></span>
+
+        </div>
+
+
+        <div class="payload">
+
+            <span>TMC-2</span>
+
+            <span class="status-dot"></span>
+
+        </div>
+
+
+        <div class="payload">
+
+            <span>IIRS</span>
+
+            <span class="status-dot"></span>
+
+        </div>
+
+    </div>
+
+</aside>
+
+
+
+<!-- =====================================================
+     MAIN CONTENT
+===================================================== -->
+
+<main class="main">
+
+
+    <div class="topbar">
+
+        <div class="breadcrumb">
+
+            Mission Console
+            &nbsp;/&nbsp;
+            <strong>Lunar Map</strong>
+
+        </div>
+
+
+        <div class="mission-status">
+
+            <span class="dot"></span>
+
+            Local Processing Engine
+
+        </div>
+
+    </div>
+
+
+
+    <!-- =================================================
+         HEADER
+    ================================================= -->
+
+    <section class="page-header">
+
+        <div class="eyebrow">
+            Registered Observation Space
+        </div>
+
+
+        <h1>
+            Regional Lunar Mosaic
+        </h1>
+
+
+        <p>
+            Visual composition of successfully registered
+            Chandrayaan-2 observations. Each registered image
+            contributes to a combined regional view.
+        </p>
+
+    </section>
+
+
+
+    <!-- =================================================
+         MOSAIC
+    ================================================= -->
+
+    <section class="mosaic-card">
+
+
+        <div class="card-header">
+
+            <div>
+
+                <div class="card-title">
+                    Registered Lunar Mosaic
+                </div>
+
+                <div class="card-subtitle">
+                    Generated from stored registration results
+                </div>
+
+            </div>
+
+
+            <div class="count-badge">
+
+                {% if mosaic_count is defined %}
+
+                    {{ mosaic_count }}
+                    registered image{{ '' if mosaic_count == 1 else 's' }}
+
+                {% else %}
+
+                    0 registered images
+
+                {% endif %}
+
+            </div>
+
+        </div>
+
+
+
+        <div class="mosaic-area">
+
+
+            {% if mosaic_url %}
+
+                <img
+                    src="{{ mosaic_url }}"
+                    alt="Regional Lunar Mosaic"
+                    class="mosaic-image"
+                >
+
+            {% else %}
+
+                <div class="empty-mosaic">
+
+                    <div class="empty-icon">
+                        ◉
+                    </div>
+
+
+                    <h3>
+                        No registered mosaic available
+                    </h3>
+
+
+                    <p>
+                        Run image correspondence and registration
+                        from the Analyze Images page, then save the
+                        observation. Registered results will appear
+                        here when available.
+                    </p>
+
+                </div>
+
+            {% endif %}
+
+
+        </div>
+
+    </section>
+
+
+
+    <!-- =================================================
+         SUMMARY
+    ================================================= -->
+
+    <div class="info-grid">
+
+
+        <div class="info-card">
+
+            <div class="info-label">
+                Stored Observations
+            </div>
+
+
+            <div class="info-value">
+
+                {{ observations|length }}
+
+            </div>
+
+
+            <div class="info-description">
+                Analysis results preserved in the
+                LunarVision observation archive.
+            </div>
+
+        </div>
+
+
+
+        <div class="info-card">
+
+            <div class="info-label">
+                Registered Images
+            </div>
+
+
+            <div class="info-value">
+
+                {% if mosaic_count is defined %}
+
+                    {{ mosaic_count }}
+
+                {% else %}
+
+                    0
+
+                {% endif %}
+
+            </div>
+
+
+            <div class="info-description">
+                Registration outputs currently available
+                for regional visual composition.
+            </div>
+
+        </div>
+
+
+
+        <div class="info-card">
+
+            <div class="info-label">
+                Payload Coverage
+            </div>
+
+
+            <div class="info-value">
+                3
+            </div>
+
+
+            <div class="info-description">
+                OHRC · TMC-2 · IIRS supported by the
+                LunarVision analysis pipeline.
+            </div>
+
+        </div>
+
+    </div>
+
+
+
+    <!-- =================================================
+         OBSERVATIONS
+    ================================================= -->
+
+    <section class="observations-card">
+
+
+        <div class="card-header">
+
+            <div>
+
+                <div class="card-title">
+                    Observation Archive
+                </div>
+
+                <div class="card-subtitle">
+                    Previously processed correspondence results
+                </div>
+
+            </div>
+
+        </div>
+
+
+
+        {% if observations %}
+
+
+            <div class="observation-row observation-head">
+
+                <div>
+                    Observation
+                </div>
+
+                <div>
+                    Sensor Pair
+                </div>
+
+                <div>
+                    Matches
+                </div>
+
+                <div>
+                    Inliers
+                </div>
+
+                <div>
+                    RMSE
+                </div>
+
+                <div>
+                    Result
+                </div>
+
+            </div>
+
+
+
+            {% for observation in observations %}
+
+
+                <div class="observation-row">
+
+
+                    <div>
+
+                        <div class="observation-id">
+
+                            #{{ observation["id"] }}
+
+                        </div>
+
+                        <div
+                            style="
+                                color:#5f6b7c;
+                                font-size:9px;
+                                margin-top:4px;
+                            "
+                        >
+
+                            {{ observation["created_at"] }}
+
+                        </div>
+
+                    </div>
+
+
+
+                    <div class="sensor-pair">
+
+                        {{ observation["source_sensor"] }}
+
+                        →
+
+                        {{ observation["reference_sensor"] }}
+
+                    </div>
+
+
+
+                    <div class="metric">
+
+                        {{ observation["total_matches"] }}
+
+                    </div>
+
+
+
+                    <div class="metric">
+
+                        {{ observation["inlier_matches"] }}
+
+                    </div>
+
+
+
+                    <div class="metric">
+
+                        {% if observation["rmse"] is not none %}
+
+                            {{ observation["rmse"] }}
+
+                        {% else %}
+
+                            —
+
+                        {% endif %}
+
+                    </div>
+
+
+
+                    <div>
+
+                        <a
+                            href="/observation/{{ observation['id'] }}"
+                            class="view-link"
+                        >
+                            View
+                        </a>
+
+                    </div>
+
+
+                </div>
+
+
+            {% endfor %}
+
+
+        {% else %}
+
+
+            <div class="no-observations">
+
+                No observations have been saved yet.
+
+                <br><br>
+
+                Go to
+                <strong style="color:#b9c4d2;">
+                    Analyze Images
+                </strong>
+                to create the first registered observation.
+
+            </div>
+
+
+        {% endif %}
+
+
+    </section>
+
+
+
+    <!-- =================================================
+         SCIENTIFIC NOTE
+    ================================================= -->
+
+    <div class="scientific-note">
+
+        <strong style="color:#9ba7b7;">
+            Scientific note:
+        </strong>
+
+        This regional mosaic is a visual composition of
+        registered image outputs. It is not presented as a
+        globally georeferenced lunar map. Scientifically
+        accurate geographic positioning requires reliable
+        product metadata, coordinates and/or ground-control
+        information.
+
+    </div>
+
+
+</main>
+
+
+</body>
+</html>

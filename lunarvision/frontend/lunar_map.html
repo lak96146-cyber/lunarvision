@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<title>LunarVision — Lunar Map</title>
+<link rel="stylesheet" href="css/style.css" />
+</head>
+<body data-page="lunar_map.html">
+<div class="app-shell">
+  <div id="sidebar-mount"></div>
+  <main class="main">
+    <div class="page-header">
+      <h1>Regional Lunar Mosaic</h1>
+      <p>Combine two or more saved observations that share the <b>same reference image</b> into a regional mosaic. This is not a complete/global Moon map — it's a composite built strictly from this app's own registrations.</p>
+    </div>
+
+    <div class="card">
+      <p style="font-size:13px; color:var(--text-dim); margin-top:0;">Select observations to combine (tip: for a real mosaic, pick observations that were all registered against the same reference image):</p>
+      <div id="obs-checklist" style="margin-bottom:16px;">Loading…</div>
+      <button class="btn" id="btn-build-mosaic">🧩 Build Mosaic</button>
+      <span id="mosaic-status" style="margin-left:14px;"></span>
+    </div>
+
+    <div id="mosaic-result" style="display:none; margin-top:20px;">
+      <div class="section-title">Mosaic Output</div>
+      <div class="grid grid-4" style="margin-bottom:16px;">
+        <div class="card stat-card"><div class="label">Pieces Combined</div><div class="value accent" id="m-pieces">—</div></div>
+        <div class="card stat-card"><div class="label">Canvas Size</div><div class="value" id="m-size">—</div></div>
+        <div class="card stat-card"><div class="label">Overlap Coverage</div><div class="value" id="m-overlap">—</div></div>
+        <div class="card stat-card"><div class="label">Skipped</div><div class="value red" id="m-skipped">—</div></div>
+      </div>
+      <div class="card">
+        <div class="result-img-wrap"><img id="mosaic-image" /></div>
+      </div>
+      <div class="card" style="margin-top:14px;">
+        <p style="font-size:13px; color:var(--text-dim); margin:0;">Contributing observations: <span id="m-contrib"></span></p>
+      </div>
+    </div>
+  </main>
+</div>
+<script src="js/sidebar.js"></script>
+<script src="js/api.js"></script>
+<script src="js/lunar_map.js"></script>
+</body>
+</html>

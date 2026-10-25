@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<title>LunarVision — Analyze</title>
+<link rel="stylesheet" href="css/style.css" />
+</head>
+<body data-page="analyze.html">
+<div class="app-shell">
+  <div id="sidebar-mount"></div>
+  <main class="main">
+    <div class="page-header">
+      <h1>Analyze New Images</h1>
+      <p>Select a source and reference lunar image, choose sensors and a detector, then run correspondence + registration.</p>
+    </div>
+
+    <div class="card">
+      <div class="checkbox-row" style="margin-bottom:16px;">
+        <input type="checkbox" id="use-synthetic" checked />
+        <label for="use-synthetic" style="margin:0;">Use synthetic test pair (no real ISRO images available yet — procedurally generated with a <b>known ground-truth transform</b>, clearly labeled as synthetic)</label>
+      </div>
+
+      <div id="synthetic-controls" class="grid grid-4" style="margin-bottom:18px;">
+        <div><label>Rotation (deg)</label><input type="number" id="syn-rotation" value="15" /></div>
+        <div><label>Scale</label><input type="number" step="0.05" id="syn-scale" value="1.05" /></div>
+        <div><label>Translate X (px)</label><input type="number" id="syn-tx" value="20" /></div>
+        <div><label>Translate Y (px)</label><input type="number" id="syn-ty" value="-15" /></div>
+      </div>
+      <button class="btn secondary small" id="btn-generate-synthetic" style="margin-bottom:20px;">🎲 Generate Synthetic Pair</button>
+
+      <div id="upload-controls" class="grid grid-2" style="display:none; margin-bottom:20px;">
+        <div>
+          <label>Source Image</label>
+          <div class="upload-box" id="source-upload-box">
+            <span>📤 Click to upload source image</span>
+            <span class="hint">PNG / JPG</span>
+          </div>
+          <input type="file" id="source-file" accept="image/*" style="display:none;" />
+        </div>
+        <div>
+          <label>Reference Image</label>
+          <div class="upload-box" id="reference-upload-box">
+            <span>📤 Click to upload reference image</span>
+            <span class="hint">PNG / JPG</span>
+          </div>
+          <input type="file" id="reference-file" accept="image/*" style="display:none;" />
+        </div>
+      </div>
+
+      <div id="preview-row" class="grid grid-2" style="margin-bottom:20px; display:none;">
+        <div class="result-img-wrap"><img id="preview-source" /></div>
+        <div class="result-img-wrap"><img id="preview-reference" /></div>
+      </div>
+
+      <div class="grid grid-3" style="margin-bottom:20px;">
+        <div>
+          <label>Source Sensor</label>
+          <select id="source-sensor">
+            <option value="OHRC">OHRC</option>
+            <option value="TMC-2" selected>TMC-2</option>
+            <option value="IIRS">IIRS</option>
+          </select>
+        </div>
+        <div>
+          <label>Reference Sensor</label>
+          <select id="reference-sensor">
+            <option value="OHRC" selected>OHRC</option>
+            <option value="TMC-2">TMC-2</option>
+            <option value="IIRS">IIRS</option>
+          </select>
+        </div>
+        <div>
+          <label>Detector</label>
+          <select id="detector">
+            <option value="sift" selected>SIFT (recommended baseline)</option>
+            <option value="orb">ORB (fast)</option>
+          </select>
+        </div>
+      </div>
+
+      <button class="btn" id="btn-analyze">▶ Analyze</button>
+      <span id="analyze-status" style="margin-left:14px;"></span>
+    </div>
+
+    <div id="pipeline-status" class="card" style="margin-top:20px; display:none;">
+      <div class="pipeline-steps">
+        <span data-step="preprocess">Preprocessing</span>
+        <span data-step="detect">Feature Detection</span>
+        <span data-step="match">Descriptor Matching</span>
+        <span data-step="ransac">RANSAC Verification</span>
+        <span data-step="register">Registration</span>
+        <span data-step="metrics">Quality Evaluation</span>
+      </div>
+    </div>
+
+    <div id="results-section" style="display:none;">
+      <div class="section-title">Results</div>
+      <div class="grid grid-4">
+        <div class="card stat-card"><div class="label">Total Matches</div><div class="value accent" id="r-total">—</div></div>
+        <div class="card stat-card"><div class="label">Inliers</div><div class="value green" id="r-inliers">—</div></div>
+        <div class="card stat-card"><div class="label">Inlier Ratio</div><div class="value" id="r-ratio">—</div></div>
+        <div class="card stat-card"><div class="label">RMSE (px)</div><div class="value" id="r-rmse">—</div></div>
+      </div>
+      <div class="grid grid-4" style="margin-top:16px;">
+        <div class="card stat-card"><div class="label">Keypoints (Source)</div><div class="value" id="r-kp-src">—</div></div>
+        <div class="card stat-card"><div class="label">Keypoints (Reference)</div><div class="value" id="r-kp-ref">—</div></div>
+        <div class="card stat-card"><div class="label">Ground-Truth Corner Error (px)</div><div class="value" id="r-gt">—</div></div>
+        <div class="card stat-card"><div class="label">Processing Time (s)</div><div class="value" id="r-time">—</div></div>
+      </div>
+
+      <div class="section-title">Correspondence Visualization</div>
+      <div class="card">
+        <p style="color:var(--text-dim); font-size:13px; margin-top:0;">Green lines = RANSAC inliers (geometrically consistent). Red lines = rejected outliers.</p>
+        <div class="result-img-wrap"><img id="r-correspondence" /></div>
+      </div>
+
+      <div class="section-title">Registration — Before / After</div>
+      <div class="card">
+        <p style="color:var(--text-dim); font-size:13px; margin-top:0;">Drag the slider: left = reference image, right = source warped into reference's frame.</p>
+        <div class="slider-compare" id="compare-slider" style="aspect-ratio: 1/1;">
+          <img id="cmp-bottom" />
+          <img id="cmp-top" class="top-layer" />
+        </div>
+        <input type="range" min="0" max="100" value="50" id="slider-range" />
+      </div>
+
+      <div class="section-title">Alignment Overlay (Red/Cyan Check)</div>
+      <div class="card">
+        <p style="color:var(--text-dim); font-size:13px; margin-top:0;">Reference (red channel) vs. warped source (cyan/green channel) — sharp single-color edges indicate misalignment; if craters look grayscale-fused, alignment is good.</p>
+        <div class="result-img-wrap"><img id="r-overlay" /></div>
+      </div>
+
+      <div style="margin-top:20px;">
+        <button class="btn" id="btn-save">💾 Save Observation</button>
+        <span id="save-status" style="margin-left:14px;"></span>
+      </div>
+    </div>
+  </main>
+</div>
+<script src="js/sidebar.js"></script>
+<script src="js/api.js"></script>
+<script src="js/analyze.js"></script>
+</body>
+</html>

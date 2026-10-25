@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+<title>LunarVision | Observations</title>
+
+<style>
+
+body {
+    margin: 0;
+    background: #020812;
+    color: white;
+    font-family: Arial, sans-serif;
+    padding: 35px;
+}
+
+h1 {
+    color: #20d9ff;
+}
+
+.sub {
+    color: #668398;
+    margin-bottom: 30px;
+}
+
+.grid {
+    display: grid;
+    grid-template-columns:
+        repeat(auto-fit, minmax(300px, 1fr));
+    gap: 18px;
+}
+
+.card {
+    background: #061321;
+    border: 1px solid rgba(30,210,255,.2);
+    border-radius: 12px;
+    padding: 20px;
+}
+
+.card:hover {
+    border-color: #20d9ff;
+}
+
+.id {
+    color: #20d9ff;
+    font-size: 12px;
+    letter-spacing: 2px;
+}
+
+.sensors {
+    font-size: 20px;
+    margin: 15px 0;
+}
+
+.metric {
+    display: flex;
+    justify-content: space-between;
+    padding: 8px 0;
+    border-bottom: 1px solid rgba(255,255,255,.06);
+    color: #7793a5;
+}
+
+.metric b {
+    color: white;
+}
+
+.success {
+    color: #35e0aa !important;
+}
+
+.button {
+    display: block;
+    text-align: center;
+    margin-top: 18px;
+    padding: 11px;
+    border-radius: 7px;
+    background: #14ccef;
+    color: #02111b;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.empty {
+    text-align: center;
+    color: #668398;
+    padding: 80px;
+}
+
+.back {
+    color: #20d9ff;
+    text-decoration: none;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<a
+    href="/analyze"
+    class="back"
+>
+← Back to Analysis
+</a>
+
+<h1>
+Lunar Observation Archive
+</h1>
+
+<div class="sub">
+Saved Chandrayaan-2 image correspondence analyses
+</div>
+
+
+{% if observations %}
+
+<div class="grid">
+
+{% for obs in observations %}
+
+<div class="card">
+
+<div class="id">
+OBSERVATION #{{ obs.id }}
+</div>
+
+
+<div class="sensors">
+
+{{ obs.source_sensor }}
+
+→
+
+{{ obs.reference_sensor }}
+
+</div>
+
+
+<div class="metric">
+<span>Keypoints</span>
+<b>
+{{ obs.source_keypoints }}
+/
+{{ obs.reference_keypoints }}
+</b>
+</div>
+
+
+<div class="metric">
+<span>Good Matches</span>
+<b>
+{{ obs.total_matches }}
+</b>
+</div>
+
+
+<div class="metric">
+<span>RANSAC Inliers</span>
+<b>
+{{ obs.inlier_matches }}
+</b>
+</div>
+
+
+<div class="metric">
+<span>Inlier Ratio</span>
+<b>
+{{ obs.inlier_ratio }}%
+</b>
+</div>
+
+
+<div class="metric">
+<span>RMSE</span>
+<b>
+{% if obs.rmse is not none %}
+{{ obs.rmse }} px
+{% else %}
+—
+{% endif %}
+</b>
+</div>
+
+
+<div class="metric">
+
+<span>Status</span>
+
+<b
+class="
+{% if obs.status == 'REGISTRATION SUCCESS' %}
+success
+{% endif %}
+"
+>
+
+{{ obs.status }}
+
+</b>
+
+</div>
+
+
+<a
+    class="button"
+    href="/observation/{{ obs.id }}"
+>
+VIEW OBSERVATION
+</a>
+
+
+</div>
+
+{% endfor %}
+
+</div>
+
+{% else %}
+
+<div class="empty">
+
+<h2>No observations saved yet.</h2>
+
+<p>
+Run an image correspondence analysis
+and save the result.
+</p>
+
+<a
+    href="/analyze"
+    class="button"
+>
+RUN ANALYSIS
+</a>
+
+</div>
+
+{% endif %}
+
+</body>
+
+</html>

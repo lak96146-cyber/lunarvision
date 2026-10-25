@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<title>LunarVision — Saved Observations</title>
+<link rel="stylesheet" href="css/style.css" />
+</head>
+<body data-page="observations.html">
+<div class="app-shell">
+  <div id="sidebar-mount"></div>
+  <main class="main">
+    <div class="page-header">
+      <h1>Saved Observations</h1>
+      <p>Every analysis run you've saved, with sensors, detector, metrics and result images.</p>
+    </div>
+
+    <div class="grid" style="grid-template-columns: 1fr 1.3fr; gap: 20px; align-items: start;">
+      <div class="card">
+        <table id="obs-table">
+          <thead><tr><th></th><th>ID</th><th>Sensors</th><th>Ratio</th><th>Type</th></tr></thead>
+          <tbody><tr><td colspan="5" style="color:var(--text-dim)">Loading…</td></tr></tbody>
+        </table>
+      </div>
+
+      <div class="card" id="detail-panel">
+        <div class="empty-state">Select an observation from the list to view details.</div>
+      </div>
+    </div>
+  </main>
+</div>
+<script src="js/sidebar.js"></script>
+<script src="js/api.js"></script>
+<script src="js/observations.js"></script>
+</body>
+</html>

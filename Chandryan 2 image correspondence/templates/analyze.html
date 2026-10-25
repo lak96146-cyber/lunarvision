@@ -1,0 +1,1121 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>LunarVision — Analyze</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: Inter, Arial, sans-serif;
+            background:
+                radial-gradient(circle at 15% 10%, rgba(70, 90, 150, 0.16), transparent 28%),
+                radial-gradient(circle at 85% 80%, rgba(100, 70, 150, 0.12), transparent 30%),
+                #080b12;
+            color: #f2f4f8;
+            min-height: 100vh;
+        }
+
+        a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        .app {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        /* ================= SIDEBAR ================= */
+
+        .sidebar {
+            width: 250px;
+            min-height: 100vh;
+            background: rgba(10, 13, 21, 0.94);
+            border-right: 1px solid rgba(255,255,255,0.07);
+            padding: 28px 18px;
+            position: fixed;
+            left: 0;
+            top: 0;
+            bottom: 0;
+        }
+
+        .brand {
+            padding: 0 12px 35px;
+        }
+
+        .brand-title {
+            font-size: 23px;
+            font-weight: 800;
+            letter-spacing: -0.5px;
+        }
+
+        .brand-subtitle {
+            color: #7f899c;
+            font-size: 11px;
+            margin-top: 6px;
+            letter-spacing: 1.3px;
+            text-transform: uppercase;
+        }
+
+        .nav-title {
+            color: #5f6879;
+            font-size: 10px;
+            font-weight: 700;
+            letter-spacing: 1.5px;
+            padding: 0 12px 10px;
+        }
+
+        .nav {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+
+        .nav a {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px;
+            border-radius: 9px;
+            color: #8c95a6;
+            font-size: 14px;
+            transition: 0.2s;
+        }
+
+        .nav a:hover {
+            background: rgba(255,255,255,0.045);
+            color: white;
+        }
+
+        .nav a.active {
+            background: rgba(120, 140, 190, 0.13);
+            color: #ffffff;
+            border: 1px solid rgba(140,160,210,0.13);
+        }
+
+        .nav-icon {
+            width: 20px;
+            text-align: center;
+            font-size: 17px;
+        }
+
+        /* ================= MAIN ================= */
+
+        .main {
+            margin-left: 250px;
+            width: calc(100% - 250px);
+            padding: 34px 42px 60px;
+        }
+
+        .topbar {
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            margin-bottom: 32px;
+        }
+
+        .page-title {
+            font-size: 31px;
+            font-weight: 750;
+            letter-spacing: -1px;
+        }
+
+        .page-description {
+            color: #7f899b;
+            margin-top: 8px;
+            font-size: 14px;
+        }
+
+        .status {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 9px 13px;
+            border-radius: 20px;
+            background: rgba(70, 190, 130, 0.08);
+            border: 1px solid rgba(70,190,130,0.15);
+            color: #80d9ad;
+            font-size: 12px;
+        }
+
+        .status-dot {
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+            background: #63d69c;
+            box-shadow: 0 0 10px rgba(99,214,156,0.7);
+        }
+
+        /* ================= ERROR ================= */
+
+        .error-box {
+            background: rgba(210, 70, 70, 0.1);
+            border: 1px solid rgba(230, 90, 90, 0.25);
+            color: #ff9b9b;
+            padding: 14px 17px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
+
+        /* ================= GRID ================= */
+
+        .analysis-grid {
+            display: grid;
+            grid-template-columns: minmax(0, 1fr) 330px;
+            gap: 22px;
+            align-items: start;
+        }
+
+        .card {
+            background: rgba(14, 18, 28, 0.88);
+            border: 1px solid rgba(255,255,255,0.065);
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 18px 50px rgba(0,0,0,0.2);
+        }
+
+        .card-header {
+            padding: 20px 22px;
+            border-bottom: 1px solid rgba(255,255,255,0.06);
+        }
+
+        .card-title {
+            font-size: 15px;
+            font-weight: 700;
+        }
+
+        .card-subtitle {
+            color: #697386;
+            font-size: 12px;
+            margin-top: 5px;
+        }
+
+        .card-body {
+            padding: 22px;
+        }
+
+        /* ================= UPLOADS ================= */
+
+        .upload-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 18px;
+        }
+
+        .upload-box {
+            position: relative;
+            min-height: 245px;
+            border: 1px dashed rgba(150,160,185,0.25);
+            background: rgba(255,255,255,0.018);
+            border-radius: 12px;
+            overflow: hidden;
+            transition: 0.2s;
+        }
+
+        .upload-box:hover {
+            border-color: rgba(150,170,220,0.5);
+            background: rgba(255,255,255,0.03);
+        }
+
+        /*
+         IMPORTANT:
+         Do NOT use display:none on the actual file input.
+         We make it transparent and cover the whole upload box.
+        */
+
+        .file-input {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            cursor: pointer;
+            z-index: 5;
+        }
+
+        .upload-content {
+            position: absolute;
+            inset: 0;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 25px;
+            text-align: center;
+            pointer-events: none;
+        }
+
+        .upload-icon {
+            width: 52px;
+            height: 52px;
+            border-radius: 13px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(120,140,190,0.1);
+            border: 1px solid rgba(150,170,220,0.12);
+            font-size: 23px;
+            margin-bottom: 15px;
+        }
+
+        .upload-label {
+            font-size: 14px;
+            font-weight: 650;
+        }
+
+        .upload-hint {
+            color: #697386;
+            font-size: 11px;
+            margin-top: 7px;
+        }
+
+        .file-name {
+            margin-top: 14px;
+            max-width: 90%;
+            padding: 7px 11px;
+            border-radius: 7px;
+            background: rgba(100,210,150,0.08);
+            color: #8be0b3;
+            font-size: 11px;
+            display: none;
+            overflow: hidden;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+        }
+
+        .upload-box.selected {
+            border-color: rgba(90,210,145,0.4);
+            background: rgba(70,180,120,0.035);
+        }
+
+        .upload-box.selected .file-name {
+            display: block;
+        }
+
+        /* ================= SETTINGS ================= */
+
+        .settings {
+            display: grid;
+            gap: 20px;
+        }
+
+        .field label {
+            display: flex;
+            justify-content: space-between;
+            color: #aeb6c5;
+            font-size: 12px;
+            margin-bottom: 9px;
+        }
+
+        select,
+        input[type="number"] {
+            width: 100%;
+            background: #0a0e17;
+            color: #e9edf4;
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 8px;
+            padding: 11px 12px;
+            outline: none;
+        }
+
+        select:focus,
+        input[type="number"]:focus {
+            border-color: rgba(130,150,210,0.5);
+        }
+
+        input[type="range"] {
+            width: 100%;
+            accent-color: #8798c7;
+            cursor: pointer;
+        }
+
+        .range-value {
+            color: #dce3f0;
+            font-weight: 700;
+        }
+
+        .range-row {
+            display: flex;
+            align-items: center;
+            gap: 13px;
+        }
+
+        /* ================= ACTION ================= */
+
+        .action-area {
+            margin-top: 22px;
+            display: flex;
+            justify-content: flex-end;
+        }
+
+        .run-btn {
+            border: none;
+            border-radius: 9px;
+            padding: 13px 20px;
+            background: #dce4f4;
+            color: #10141c;
+            font-weight: 800;
+            font-size: 12px;
+            letter-spacing: 0.6px;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .run-btn:hover {
+            transform: translateY(-1px);
+            background: #ffffff;
+            box-shadow: 0 8px 25px rgba(200,210,240,0.12);
+        }
+
+        .run-btn:disabled {
+            opacity: 0.55;
+            cursor: wait;
+            transform: none;
+        }
+
+        /* ================= INFO ================= */
+
+        .info-list {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .info-item {
+            display: flex;
+            gap: 12px;
+        }
+
+        .info-number {
+            width: 25px;
+            height: 25px;
+            min-width: 25px;
+            border-radius: 7px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(130,150,200,0.1);
+            color: #aab9db;
+            font-size: 11px;
+            font-weight: 700;
+        }
+
+        .info-text strong {
+            display: block;
+            font-size: 12px;
+            margin-bottom: 3px;
+        }
+
+        .info-text span {
+            display: block;
+            color: #687386;
+            font-size: 11px;
+            line-height: 1.45;
+        }
+
+        .pipeline {
+            margin-top: 20px;
+            padding: 16px;
+            border-radius: 10px;
+            background: rgba(255,255,255,0.025);
+            border: 1px solid rgba(255,255,255,0.05);
+        }
+
+        .pipeline-title {
+            color: #788397;
+            font-size: 10px;
+            font-weight: 700;
+            letter-spacing: 1.3px;
+            margin-bottom: 12px;
+        }
+
+        .pipeline-step {
+            color: #aab2c0;
+            font-size: 11px;
+            padding: 6px 0;
+        }
+
+        .pipeline-step::before {
+            content: "✓";
+            color: #79d3a3;
+            margin-right: 8px;
+        }
+
+        /* ================= RESPONSIVE ================= */
+
+        @media (max-width: 1000px) {
+            .sidebar {
+                width: 210px;
+            }
+
+            .main {
+                margin-left: 210px;
+                width: calc(100% - 210px);
+                padding: 28px;
+            }
+
+            .analysis-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 720px) {
+            .sidebar {
+                position: relative;
+                width: 100%;
+                min-height: auto;
+            }
+
+            .app {
+                display: block;
+            }
+
+            .main {
+                margin-left: 0;
+                width: 100%;
+            }
+
+            .upload-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .topbar {
+                flex-direction: column;
+                gap: 15px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="app">
+
+    <!-- ================= SIDEBAR ================= -->
+
+    <aside class="sidebar">
+
+        <div class="brand">
+            <div class="brand-title">LunarVision</div>
+            <div class="brand-subtitle">Chandrayaan-2 Analysis</div>
+        </div>
+
+        <div class="nav-title">WORKSPACE</div>
+
+        <nav class="nav">
+
+            <a href="/">
+                <span class="nav-icon">⌂</span>
+                Dashboard
+            </a>
+
+            <a href="/analyze" class="active">
+                <span class="nav-icon">◎</span>
+                Analyze
+            </a>
+
+            <a href="/observations">
+                <span class="nav-icon">◇</span>
+                Observations
+            </a>
+
+            <a href="/lunar-map">
+                <span class="nav-icon">◌</span>
+                Lunar Map
+            </a>
+
+        </nav>
+
+    </aside>
+
+
+    <!-- ================= MAIN ================= -->
+
+    <main class="main">
+
+        <div class="topbar">
+
+            <div>
+                <h1 class="page-title">Image Correspondence</h1>
+
+                <p class="page-description">
+                    Register and geometrically verify corresponding lunar observations
+                    across Chandrayaan-2 sensors.
+                </p>
+            </div>
+
+            <div class="status">
+                <span class="status-dot"></span>
+                Engine Ready
+            </div>
+
+        </div>
+
+
+        {% if error %}
+        <div class="error-box">
+            {{ error }}
+        </div>
+        {% endif %}
+
+
+        <form
+            id="analysisForm"
+            action="{{ url_for('run_analysis') }}"
+            method="POST"
+            enctype="multipart/form-data"
+        >
+
+            <div class="analysis-grid">
+
+                <!-- ================= LEFT ================= -->
+
+                <section class="card">
+
+                    <div class="card-header">
+                        <div class="card-title">Observation Pair</div>
+
+                        <div class="card-subtitle">
+                            Select the source and reference lunar images.
+                        </div>
+                    </div>
+
+
+                    <div class="card-body">
+
+                        <div class="upload-grid">
+
+                            <!-- SOURCE -->
+
+                            <div class="upload-box" id="sourceUploadBox">
+
+                                <input
+                                    class="file-input"
+                                    id="sourceImage"
+                                    name="source_image"
+                                    type="file"
+                                    accept="image/*"
+                                >
+
+                                <div class="upload-content">
+
+                                    <div class="upload-icon">↑</div>
+
+                                    <div class="upload-label">
+                                        Source Observation
+                                    </div>
+
+                                    <div class="upload-hint">
+                                        OHRC / TMC-2 / IIRS image
+                                    </div>
+
+                                    <div
+                                        class="file-name"
+                                        id="sourceFileName"
+                                    ></div>
+
+                                </div>
+
+                            </div>
+
+
+                            <!-- REFERENCE -->
+
+                            <div class="upload-box" id="referenceUploadBox">
+
+                                <input
+                                    class="file-input"
+                                    id="referenceImage"
+                                    name="reference_image"
+                                    type="file"
+                                    accept="image/*"
+                                >
+
+                                <div class="upload-content">
+
+                                    <div class="upload-icon">↓</div>
+
+                                    <div class="upload-label">
+                                        Reference Observation
+                                    </div>
+
+                                    <div class="upload-hint">
+                                        OHRC / TMC-2 / IIRS image
+                                    </div>
+
+                                    <div
+                                        class="file-name"
+                                        id="referenceFileName"
+                                    ></div>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="action-area">
+
+                            <button
+                                type="submit"
+                                class="run-btn"
+                                id="runButton"
+                            >
+                                RUN CORRESPONDENCE ANALYSIS
+                            </button>
+
+                        </div>
+
+                    </div>
+
+                </section>
+
+
+                <!-- ================= RIGHT ================= -->
+
+                <aside>
+
+                    <section class="card">
+
+                        <div class="card-header">
+
+                            <div class="card-title">
+                                Analysis Parameters
+                            </div>
+
+                            <div class="card-subtitle">
+                                Configure the correspondence pipeline.
+                            </div>
+
+                        </div>
+
+
+                        <div class="card-body">
+
+                            <div class="settings">
+
+                                <!-- SOURCE SENSOR -->
+
+                                <div class="field">
+
+                                    <label>
+                                        <span>Source Sensor</span>
+                                    </label>
+
+                                    <select name="source_sensor">
+                                        <option value="OHRC">OHRC</option>
+                                        <option value="TMC-2">TMC-2</option>
+                                        <option value="IIRS">IIRS</option>
+                                    </select>
+
+                                </div>
+
+
+                                <!-- REFERENCE SENSOR -->
+
+                                <div class="field">
+
+                                    <label>
+                                        <span>Reference Sensor</span>
+                                    </label>
+
+                                    <select name="reference_sensor">
+                                        <option value="TMC-2">TMC-2</option>
+                                        <option value="OHRC">OHRC</option>
+                                        <option value="IIRS">IIRS</option>
+                                    </select>
+
+                                </div>
+
+
+                                <!-- DETECTOR -->
+
+                                <div class="field">
+
+                                    <label>
+                                        <span>Feature Detector</span>
+                                    </label>
+
+                                    <select name="detector">
+
+                                        <option value="SIFT" selected>
+                                            SIFT
+                                        </option>
+
+                                        <option value="ORB">
+                                            ORB
+                                        </option>
+
+                                    </select>
+
+                                </div>
+
+
+                                <!-- RATIO -->
+
+                                <div class="field">
+
+                                    <label>
+
+                                        <span>
+                                            Lowe Ratio Threshold
+                                        </span>
+
+                                        <span
+                                            class="range-value"
+                                            id="ratioValue"
+                                        >
+                                            0.75
+                                        </span>
+
+                                    </label>
+
+
+                                    <div class="range-row">
+
+                                        <input
+                                            type="range"
+                                            id="ratioThreshold"
+                                            name="ratio_threshold"
+                                            min="0.60"
+                                            max="0.90"
+                                            step="0.01"
+                                            value="0.75"
+                                        >
+
+                                    </div>
+
+                                </div>
+
+
+                                <!-- RANSAC -->
+
+                                <div class="field">
+
+                                    <label>
+
+                                        <span>
+                                            RANSAC Threshold
+                                        </span>
+
+                                        <span
+                                            class="range-value"
+                                            id="ransacValue"
+                                        >
+                                            5 px
+                                        </span>
+
+                                    </label>
+
+
+                                    <div class="range-row">
+
+                                        <input
+                                            type="range"
+                                            id="ransacThreshold"
+                                            name="ransac_threshold"
+                                            min="1"
+                                            max="15"
+                                            step="0.5"
+                                            value="5"
+                                        >
+
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </section>
+
+
+                    <!-- INFO CARD -->
+
+                    <section
+                        class="card"
+                        style="margin-top: 20px;"
+                    >
+
+                        <div class="card-header">
+
+                            <div class="card-title">
+                                Pipeline
+                            </div>
+
+                            <div class="card-subtitle">
+                                Processing sequence
+                            </div>
+
+                        </div>
+
+                        <div class="card-body">
+
+                            <div class="info-list">
+
+                                <div class="info-item">
+
+                                    <div class="info-number">1</div>
+
+                                    <div class="info-text">
+                                        <strong>Preprocessing</strong>
+                                        <span>
+                                            Grayscale, CLAHE enhancement and
+                                            noise reduction.
+                                        </span>
+                                    </div>
+
+                                </div>
+
+
+                                <div class="info-item">
+
+                                    <div class="info-number">2</div>
+
+                                    <div class="info-text">
+                                        <strong>Feature Detection</strong>
+                                        <span>
+                                            Extract stable local features
+                                            using SIFT or ORB.
+                                        </span>
+                                    </div>
+
+                                </div>
+
+
+                                <div class="info-item">
+
+                                    <div class="info-number">3</div>
+
+                                    <div class="info-text">
+                                        <strong>Feature Matching</strong>
+                                        <span>
+                                            Lowe ratio filtering removes
+                                            weak descriptor matches.
+                                        </span>
+                                    </div>
+
+                                </div>
+
+
+                                <div class="info-item">
+
+                                    <div class="info-number">4</div>
+
+                                    <div class="info-text">
+                                        <strong>RANSAC Verification</strong>
+                                        <span>
+                                            Geometric consistency is verified
+                                            using homography estimation.
+                                        </span>
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+
+                            <div class="pipeline">
+
+                                <div class="pipeline-title">
+                                    OUTPUTS
+                                </div>
+
+                                <div class="pipeline-step">
+                                    Correspondence map
+                                </div>
+
+                                <div class="pipeline-step">
+                                    Registered image
+                                </div>
+
+                                <div class="pipeline-step">
+                                    Reference overlay
+                                </div>
+
+                                <div class="pipeline-step">
+                                    Inlier statistics
+                                </div>
+
+                                <div class="pipeline-step">
+                                    Reprojection error
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </section>
+
+                </aside>
+
+            </div>
+
+        </form>
+
+    </main>
+
+</div>
+
+
+<script>
+
+    /* ==========================================
+       FILE SELECTION
+       ========================================== */
+
+    const sourceInput = document.getElementById("sourceImage");
+    const referenceInput = document.getElementById("referenceImage");
+
+    const sourceBox = document.getElementById("sourceUploadBox");
+    const referenceBox = document.getElementById("referenceUploadBox");
+
+    const sourceName = document.getElementById("sourceFileName");
+    const referenceName = document.getElementById("referenceFileName");
+
+
+    sourceInput.addEventListener("change", function () {
+
+        if (this.files && this.files.length > 0) {
+
+            sourceName.textContent = this.files[0].name;
+
+            sourceBox.classList.add("selected");
+
+        } else {
+
+            sourceName.textContent = "";
+
+            sourceBox.classList.remove("selected");
+
+        }
+
+    });
+
+
+    referenceInput.addEventListener("change", function () {
+
+        if (this.files && this.files.length > 0) {
+
+            referenceName.textContent = this.files[0].name;
+
+            referenceBox.classList.add("selected");
+
+        } else {
+
+            referenceName.textContent = "";
+
+            referenceBox.classList.remove("selected");
+
+        }
+
+    });
+
+
+    /* ==========================================
+       RANGE VALUES
+       ========================================== */
+
+    const ratioSlider =
+        document.getElementById("ratioThreshold");
+
+    const ratioValue =
+        document.getElementById("ratioValue");
+
+
+    ratioSlider.addEventListener("input", function () {
+
+        ratioValue.textContent =
+            Number(this.value).toFixed(2);
+
+    });
+
+
+    const ransacSlider =
+        document.getElementById("ransacThreshold");
+
+    const ransacValue =
+        document.getElementById("ransacValue");
+
+
+    ransacSlider.addEventListener("input", function () {
+
+        ransacValue.textContent =
+            this.value + " px";
+
+    });
+
+
+    /* ==========================================
+       FORM SUBMISSION
+       ========================================== */
+
+    const form =
+        document.getElementById("analysisForm");
+
+    const runButton =
+        document.getElementById("runButton");
+
+
+    form.addEventListener("submit", function (event) {
+
+        /*
+         Browser native "required" validation is intentionally
+         NOT used on file inputs because the custom upload
+         input is transparent/non-focusable.
+        */
+
+        if (
+            !sourceInput.files ||
+            sourceInput.files.length === 0
+        ) {
+
+            event.preventDefault();
+
+            alert("Please select the Source Observation image.");
+
+            return;
+
+        }
+
+
+        if (
+            !referenceInput.files ||
+            referenceInput.files.length === 0
+        ) {
+
+            event.preventDefault();
+
+            alert("Please select the Reference Observation image.");
+
+            return;
+
+        }
+
+
+        /*
+         Everything is valid.
+         Allow normal multipart POST to Flask.
+        */
+
+        runButton.disabled = true;
+
+        runButton.textContent =
+            "ANALYZING...";
+
+    });
+
+</script>
+
+</body>
+</html>
